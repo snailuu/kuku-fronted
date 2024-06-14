@@ -1,0 +1,78 @@
+
+.icon__button {
+  opacity: .8;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.header-bar__icon {
+  .iconfont {
+    font-size: 16px;
+  }
+}
+
+.avatar-form {
+  .el-form-item__content {
+    margin-left: 0 !important;
+    justify-content: center;
+  }
+}
+
+.card-box {
+  min-height: 100%;
+}
+
+.search-btn__left {
+  margin-left: 5px;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-inline {
+  display: inline-flex;
+}
+
+.item-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
+.ellipsis {
+  display: inline-block;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.ellipsis-2 {
+  display: -webkit-inline-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+
+
+// 工具类函数
+@import './mixin.scss';
+//滚动条样式
+@include scrollBar;

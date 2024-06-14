@@ -1,0 +1,126 @@
+/*菜单*/
+.el-menu {
+  border: none !important;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.el-menu-item, .el-sub-menu__title {
+  color: #3C3D3E;
+}
+
+.el-menu--horizontal > .el-menu-item, .el-menu--horizontal > .el-sub-menu .el-sub-menu__title {
+  line-height: 48px !important;
+}
+
+/** Button 按钮*/
+.el-button{
+  font-weight: normal !important;
+}
+
+/** Card 卡片*/
+.el-card__body{
+  padding: 10px;
+  height: 100%;
+}
+
+/** 下拉框*/
+.el-select{
+  width: 100%;
+}
+
+/*级联选择器*/
+.el-cascader{
+  width: 100%;
+}
+
+/*对话框 dialog*/
+.el-dialog__body{
+  max-height: calc(90vh - 80px)!important;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px !important;
+}
+.el-overlay .el-overlay-dialog{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .el-dialog{
+    margin: auto !important;
+  }
+}
+
+/** Message Box 消息弹出框*/
+.el-message-box__btns{
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  button:nth-child(1){
+    margin-left: 10px;
+  }
+}
+
+/*侧边栏*/
+.el-drawer__close-btn {
+  padding: 0 !important;
+}
+
+.el-drawer__header {
+  margin-bottom: 0 !important;
+}
+
+
+/* 面包屑*/
+.el-breadcrumb {
+  .el-breadcrumb__inner.is-link {
+    color: #3C3D3E;
+    font-weight: unset;
+  }
+  .el-breadcrumb__item:last-child .el-breadcrumb__inner{
+    color: #3C3D3E;
+    opacity: .7;
+  }
+}
+
+/* 表格*/
+.el-table{
+  width: 100%;
+  color: #3C3D3E !important;
+}
+.el-table thead{
+  color: #3C3D3E !important;
+}
+.el-table th.el-table__cell{
+  background-color: #f5f7fa !important;
+  color: #3C3D3E !important;
+}
+
+.el-form-item__label{
+  color: #3C3D3E !important;
+}
+
+.el-input__inner{
+  color: #3C3D3E !important;
+}
+
+.el-select-dropdown__item{
+  color: #3C3D3E !important;
+}
+
+.el-dropdown{
+  color: #3C3D3E !important;
+}
+
+.el-table__cell .el-button{
+  font-size: 13px;
+}
+
+.el-table__cell .el-button + .el-button{
+  margin-left: 8px !important;
+}
+
+.el-table .cell{
+  padding: 0px 8px !important;
+}

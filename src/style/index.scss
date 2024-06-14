@@ -1,0 +1,33 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  list-style: none;
+}
+
+body,html,#app {
+  place-items: center;
+  font-family: Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  overflow: hidden;
+  position: relative;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  height: 100%;
+  width: 100%;
+  color: #3C3D3E;
+}
+
+
+@import "element";
+@import "variables";
+@import "basic";
+@import "common";
+@import "theme";
+@import "animation";
+
+
