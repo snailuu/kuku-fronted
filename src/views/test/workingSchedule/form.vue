@@ -3,24 +3,22 @@
              @close="closeDialog" draggable>
     <el-form :model="form" ref="formRef" :rules="rules" label-width="90px">
       <el-row :gutter="10">
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="值班安排" prop="arrangeId">
             <el-input type="number" v-model="form.arrangeId" placeholder="请输入值班安排"/>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="值班人员" prop="userId">
             <el-input type="number" v-model="form.userId" placeholder="请输入值班人员"/>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="值班日期">
             <el-date-picker v-model="form.workingDate" type="date" placeholder="请选择值班日期"/>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="值班状态" prop="status">
             <el-select v-model="form.status" clearable placeholder="请选择值班状态">
               <el-option value="1" label="计划中"/>

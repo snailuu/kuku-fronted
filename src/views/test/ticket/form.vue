@@ -3,36 +3,32 @@
              @close="closeDialog" draggable>
     <el-form :model="form" ref="formRef" :rules="rules" label-width="90px">
       <el-row :gutter="10">
-         <el-col :span="12">
+         <el-col :span="24">
            <el-form-item label="工单uuid" prop="uuid">
              <el-input v-model="form.uuid" maxlength="256" placeholder="请输入工单uuid"/>
            </el-form-item>
          </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="用户id" prop="userId">
             <el-input type="number" v-model="form.userId" placeholder="请输入用户id"/>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="10">
-         <el-col :span="12">
+         <el-col :span="24">
            <el-form-item label="工单标题" prop="title">
              <el-input v-model="form.title" maxlength="128" placeholder="请输入工单标题"/>
            </el-form-item>
          </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="内容" prop="body">
             <el-input type="textarea" v-model="form.body" maxlength="" placeholder="请输入内容"/>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="10">
-         <el-col :span="12">
+         <el-col :span="24">
            <el-form-item label="图片" prop="pictures">
              <el-input v-model="form.pictures" maxlength="255" placeholder="请输入图片"/>
            </el-form-item>
          </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="状态" prop="status">
             <el-select v-model="form.status" clearable placeholder="请选择状态">
               <el-option value="0" label="待确定"/>
@@ -42,26 +38,22 @@
             </el-select>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="10">
-         <el-col :span="12">
+         <el-col :span="24">
            <el-form-item label="工单类型" prop="ticketType">
              <el-input v-model="form.ticketType" maxlength="4" placeholder="请输入工单类型"/>
            </el-form-item>
          </el-col>
-         <el-col :span="12">
+         <el-col :span="24">
            <el-form-item label="联系邮箱" prop="contactEmail">
              <el-input v-model="form.contactEmail" maxlength="128" placeholder="请输入联系邮箱"/>
            </el-form-item>
          </el-col>
-      </el-row>
-      <el-row :gutter="10">
-         <el-col :span="12">
+         <el-col :span="24">
            <el-form-item label="联系手机号" prop="contactPhone">
              <el-input v-model="form.contactPhone" maxlength="128" placeholder="请输入联系手机号"/>
            </el-form-item>
          </el-col>
-         <el-col :span="12">
+         <el-col :span="24">
            <el-form-item label="创建人" prop="createdBy">
              <el-input v-model="form.createdBy" maxlength="32" placeholder="请输入创建人"/>
            </el-form-item>
@@ -107,6 +99,21 @@ let form: any = ref({
 
 // 效验规则
 const rules = reactive<FormRules>({
+  title: [
+    {required: true, message: '请输入工单标题', trigger: 'blur'},
+  ],
+  body: [
+    {required: true, message: '请输入内容', trigger: 'blur'},
+  ],
+  status: [
+    {required: true, message: '请选择状态', trigger: 'blur'},
+  ],
+  ticketType: [
+    {required: true, message: '请输入工单类型', trigger: 'blur'},
+  ],
+  contactEmail: [
+    {required: true, message: '请输入联系邮箱', trigger: 'blur'},
+  ],
 })
 
 // 获取详情

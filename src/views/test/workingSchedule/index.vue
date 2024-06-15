@@ -2,6 +2,29 @@
   <el-card shadow="never" class="card-box">
     <el-form :model="queryForm" label-width="80px">
       <el-row :gutter="20">
+        <el-col :sm="24" :md="12" :lg="8" :xl="6">
+          <el-form-item label="值班人员">
+            <el-input v-model="queryForm.userId" @keyup.enter="onSearch" clearable placeholder="请输入值班人员"/>
+          </el-form-item>
+        </el-col>
+        <el-col :lg="8" :md="12" :sm="24" :xl="6">
+          <el-form-item label="值班日期">
+            <custom-date-picker type="daterange" v-model:startDate="queryForm.workingDateStart"
+                                v-model:endDate="queryForm.workingDateEnd"
+                                clearable start-placeholder="开始时间"
+                                end-placeholder="结束时间"/>
+          </el-form-item>
+        </el-col>
+        <el-col :sm="24" :md="12" :lg="8" :xl="6">
+          <el-form-item label="值班状态">
+            <el-select v-model="queryForm.status" clearable placeholder="请选择值班状态">
+                <el-option value="1" label="计划中"/>
+                <el-option value="2" label="进行中"/>
+                <el-option value="3" label="已打卡"/>
+                <el-option value="4" label="缺勤"/>
+              </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
@@ -83,6 +106,9 @@ import {calcTableIndex} from "@/utils/util";
 /** 查询参数 **/
 let queryForm: any = ref({
     keyword: null,
+    userId: null,
+    workingDate: null,
+    status: null,
 });
 
 const tableLoading = ref({

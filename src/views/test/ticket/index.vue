@@ -3,7 +3,12 @@
     <el-form :model="queryForm" label-width="80px">
       <el-row :gutter="20">
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="工单标题" >
+          <el-form-item label="用户id">
+            <el-input v-model="queryForm.userId" @keyup.enter="onSearch" clearable placeholder="请输入用户id"/>
+          </el-form-item>
+        </el-col>
+        <el-col :sm="24" :md="12" :lg="8" :xl="6">
+          <el-form-item label="工单标题">
             <el-input v-model="queryForm.title" @keyup.enter="onSearch" clearable placeholder="请输入工单标题"/>
           </el-form-item>
         </el-col>
@@ -53,6 +58,7 @@
     <el-table v-loading="tableLoading.status" :data="tableData.data" border row-key="id" @sort-change="sortChange">
       <el-table-column prop="_tableIndex" label="序号" align="center" width="50px"/>
       <el-table-column prop="uuid" label="工单uuid" align="center" show-overflow-tooltip/>
+      <el-table-column prop="userId" label="用户id" align="center" show-overflow-tooltip/>
       <el-table-column prop="title" label="工单标题" align="center" show-overflow-tooltip/>
       <el-table-column prop="body" label="内容" align="center" show-overflow-tooltip/>
       <el-table-column prop="pictures" label="图片" align="center" show-overflow-tooltip/>
@@ -107,6 +113,7 @@ import {calcTableIndex} from "@/utils/util";
 /** 查询参数 **/
 let queryForm: any = ref({
     keyword: null,
+    userId: null,
     title: null,
     status: null,
 });

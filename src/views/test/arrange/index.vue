@@ -2,6 +2,45 @@
   <el-card shadow="never" class="card-box">
     <el-form :model="queryForm" label-width="80px">
       <el-row :gutter="20">
+        <el-col :sm="24" :md="12" :lg="8" :xl="6">
+          <el-form-item label="班次类型">
+            <el-select v-model="queryForm.type" clearable placeholder="请选择班次类型">
+              <el-option label="早班" value="1"/>
+              <el-option label="午班" value="2"/>
+              <el-option label="晚班" value="3"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :sm="24" :md="12" :lg="8" :xl="6">
+          <el-form-item label="早班开始">
+            <el-input v-model="queryForm.morningBegin" @keyup.enter="onSearch" clearable placeholder="请输入早班开始"/>
+          </el-form-item>
+        </el-col>
+        <el-col :sm="24" :md="12" :lg="8" :xl="6">
+          <el-form-item label="早班结束">
+            <el-input v-model="queryForm.morningEnd" @keyup.enter="onSearch" clearable placeholder="请输入早班结束"/>
+          </el-form-item>
+        </el-col>
+        <el-col :sm="24" :md="12" :lg="8" :xl="6">
+          <el-form-item label="午班开始">
+            <el-input v-model="queryForm.afternoonBegin" @keyup.enter="onSearch" clearable placeholder="请输入午班开始"/>
+          </el-form-item>
+        </el-col>
+        <el-col :sm="24" :md="12" :lg="8" :xl="6">
+          <el-form-item label="午班结束">
+            <el-input v-model="queryForm.afternoonEnd" @keyup.enter="onSearch" clearable placeholder="请输入午班结束"/>
+          </el-form-item>
+        </el-col>
+        <el-col :sm="24" :md="12" :lg="8" :xl="6">
+          <el-form-item label="晚班开始">
+            <el-input v-model="queryForm.nightBegin" @keyup.enter="onSearch" clearable placeholder="请输入晚班开始"/>
+          </el-form-item>
+        </el-col>
+        <el-col :sm="24" :md="12" :lg="8" :xl="6">
+          <el-form-item label="晚班结束">
+            <el-input v-model="queryForm.nightEnd" @keyup.enter="onSearch" clearable placeholder="请输入晚班结束"/>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
@@ -84,6 +123,13 @@ import {calcTableIndex} from "@/utils/util";
 /** 查询参数 **/
 let queryForm: any = ref({
     keyword: null,
+    type: null,
+    morningBegin: null,
+    morningEnd: null,
+    afternoonBegin: null,
+    afternoonEnd: null,
+    nightBegin: null,
+    nightEnd: null,
 });
 
 const tableLoading = ref({
