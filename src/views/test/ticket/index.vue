@@ -3,7 +3,7 @@
     <el-form :model="queryForm" label-width="80px">
       <el-row :gutter="20">
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="工单标题">
+          <el-form-item label="工单标题" >
             <el-input v-model="queryForm.title" @keyup.enter="onSearch" clearable placeholder="请输入工单标题"/>
           </el-form-item>
         </el-col>
@@ -58,10 +58,16 @@
       <el-table-column prop="pictures" label="图片" align="center" show-overflow-tooltip/>
       <el-table-column prop="status" label="状态" align="center">
         <template #default="scope">
-          <span v-if="scope.row.status == 0">未提交</span>
-          <span v-if="scope.row.status == 1">未审核</span>
-          <span v-if="scope.row.status == 2">审核通过</span>
-          <span v-if="scope.row.status == 3">退回、审核未通过</span>
+<!--          <template #default="scope">-->
+<!--            <el-tag v-if="scope.row.status===true" type="success" disable-transitions>启用</el-tag>-->
+<!--            <el-tag v-else type="danger" disable-transitions>禁用</el-tag>-->
+<!--          </template>-->
+          <el-tag v-if="scope.row.status == 0" type="warning">待确定</el-tag>
+          <el-tag v-else-if="scope.row.status == 1">进行中</el-tag>
+          <el-tag v-else-if="scope.row.status == 2" type="success">已完成</el-tag>
+          <el-tag v-else-if="scope.row.status == 3" type="info">关闭</el-tag>
+          <el-tag v-else type="info">未知状态</el-tag>
+
         </template>
       </el-table-column>
       <el-table-column prop="ticketType" label="工单类型" align="center" show-overflow-tooltip/>

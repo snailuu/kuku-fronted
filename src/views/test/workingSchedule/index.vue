@@ -42,6 +42,11 @@
       <el-table-column prop="workingDate" label="值班日期" align="center" min-width="150"/>
       <el-table-column prop="status" label="值班状态" align="center">
         <template #default="scope">
+          <el-tag v-if="scope.row.status == 1" type="info">计划中</el-tag>
+          <el-tag v-else-if="scope.row.status == 2">进行中</el-tag>
+          <el-tag v-else-if="scope.row.status == 3" type="success">已完成</el-tag>
+          <el-tag v-else-if="scope.row.status == 4" type="warning">缺勤</el-tag>
+          <el-tag v-else type="info">未知状态</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" min-width="116">

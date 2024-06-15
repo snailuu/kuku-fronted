@@ -39,6 +39,9 @@
       <el-table-column prop="_tableIndex" label="序号" align="center" width="50px"/>
       <el-table-column prop="type" label="班次类型" align="center">
         <template #default="scope">
+          <el-tag v-if="scope.row.type == 1" type="primary">早班</el-tag>
+          <el-tag v-else-if="scope.row.type == 2" type="success">午班</el-tag>
+          <el-tag v-else-if="scope.row.type == 3" type="warning">晚班</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="morningBegin" label="早班开始" align="center" show-overflow-tooltip/>
