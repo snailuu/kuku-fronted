@@ -46,7 +46,7 @@
         <!--        时间选择器-->
         <el-col :span="12">
           <el-form-item label="时间">
-            <el-time-picker v-model="form.time" placeholder="选择时间"/>
+            <el-time-picker value-format="HH:mm:ss" v-model="form.time" placeholder="选择时间"/>
           </el-form-item>
         </el-col>
         <!--        日期时间选择器-->

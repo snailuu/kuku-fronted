@@ -3,6 +3,15 @@
     <el-form :model="queryForm" label-width="80px">
       <el-row :gutter="20">
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
+          <el-form-item label="值班安排">
+            <el-select v-model="queryForm.arrangeType" clearable placeholder="请选择值班安排">
+              <el-option label="早班" value="1"/>
+              <el-option label="午班" value="2"/>
+              <el-option label="晚班" value="3"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :sm="24" :md="12" :lg="8" :xl="6">
           <el-form-item label="值班人员">
             <el-input v-model="queryForm.userId" @keyup.enter="onSearch" clearable placeholder="请输入值班人员"/>
           </el-form-item>
@@ -60,7 +69,13 @@
     </div>
     <el-table v-loading="tableLoading.status" :data="tableData.data" border row-key="id" @sort-change="sortChange">
       <el-table-column prop="_tableIndex" label="序号" align="center" width="50px"/>
-      <el-table-column prop="arrangeId" label="值班安排" align="center" show-overflow-tooltip/>
+      <el-table-column prop="arrangeType" label="值班安排" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.arrangeType == 1" type="warning">早班</el-tag>
+          <el-tag v-else-if="scope.row.arrangeType == 2">午班</el-tag>
+          <el-tag v-else-if="scope.row.arrangeType == 3" type="success">晚班</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="userId" label="值班人员" align="center" show-overflow-tooltip/>
       <el-table-column prop="workingDate" label="值班日期" align="center" min-width="150"/>
       <el-table-column prop="status" label="值班状态" align="center">
@@ -106,6 +121,7 @@ import {calcTableIndex} from "@/utils/util";
 /** 查询参数 **/
 let queryForm: any = ref({
     keyword: null,
+    arrangeType: null,
     userId: null,
     workingDate: null,
     status: null,

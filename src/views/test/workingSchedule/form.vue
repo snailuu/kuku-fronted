@@ -3,22 +3,28 @@
              @close="closeDialog" draggable>
     <el-form :model="form" ref="formRef" :rules="rules" label-width="90px">
       <el-row :gutter="10">
-        <el-col :span="24">
-          <el-form-item label="值班安排" prop="arrangeId">
-            <el-input type="number" v-model="form.arrangeId" placeholder="请输入值班安排"/>
+        <el-col :span="12">
+          <el-form-item label="值班安排" prop="arrangeType">
+            <el-select v-model="form.arrangeType" clearable placeholder="请选择值班安排">
+              <el-option label="早班" value="1"/>
+              <el-option label="午班" value="2"/>
+              <el-option label="晚班" value="3"/>
+            </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="24">
-          <el-form-item label="值班人员" prop="userId">
-            <el-input type="number" v-model="form.userId" placeholder="请输入值班人员"/>
-          </el-form-item>
-        </el-col>
-        <el-col :span="24">
+         <el-col :span="12">
+           <el-form-item label="值班人员" prop="userId">
+             <el-input v-model="form.userId" maxlength="20" placeholder="请输入值班人员"/>
+           </el-form-item>
+         </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :span="12">
           <el-form-item label="值班日期">
             <el-date-picker v-model="form.workingDate" type="date" placeholder="请选择值班日期"/>
           </el-form-item>
         </el-col>
-        <el-col :span="24">
+        <el-col :span="12">
           <el-form-item label="值班状态" prop="status">
             <el-select v-model="form.status" clearable placeholder="请选择值班状态">
               <el-option value="1" label="计划中"/>
@@ -52,7 +58,7 @@ const emits = defineEmits<{
 // 表单
 let form: any = ref({
     id: null,
-    arrangeId: null,
+    arrangeType: null,
     userId: null,
     workingDate: null,
     status: null,
@@ -60,14 +66,11 @@ let form: any = ref({
 
 // 效验规则
 const rules = reactive<FormRules>({
-  arrangeId: [
-    {required: true, message: '请输入值班安排', trigger: 'blur'},
+  arrangeType: [
+    {required: true, message: '请选择值班安排', trigger: 'blur'},
   ],
   userId: [
     {required: true, message: '请输入值班人员', trigger: 'blur'},
-  ],
-  workingDate: [
-    {required: true, message: '请选择值班日期', trigger: 'blur'},
   ],
 })
 
@@ -87,10 +90,10 @@ const dialogData = reactive({
 // 打开弹框
 const openDialog = async (id: string) => {
   dialogData.isShow = true;
-  dialogData.title = '新增人员排班表';
+  dialogData.title = '新增人员排班';
   if (id) {
     dialogData.id = id;
-    dialogData.title = '编辑人员排班表';
+    dialogData.title = '编辑人员排班';
     getDetails(id);
   }
 }

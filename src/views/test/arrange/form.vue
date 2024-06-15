@@ -9,44 +9,38 @@
               <el-option label="早班" :value="1"/>
               <el-option label="午班" :value="2"/>
               <el-option label="晚班" :value="3"/>
-
             </el-select>
           </el-form-item>
         </el-col>
-         <el-col :span="12">
-           <el-form-item label="早班开始" prop="morningBegin">
-             <el-input v-model="form.morningBegin" maxlength="" placeholder="请输入早班开始"/>
-           </el-form-item>
-         </el-col>
       </el-row>
       <el-row :gutter="10">
          <el-col :span="12">
            <el-form-item label="早班结束" prop="morningEnd">
-             <el-input v-model="form.morningEnd" maxlength="" placeholder="请输入早班结束"/>
+             <el-time-picker value-format="HH:mm:ss" v-model="form.morningEnd" maxlength="" placeholder="请输入早班结束"/>
            </el-form-item>
          </el-col>
          <el-col :span="12">
            <el-form-item label="午班开始" prop="afternoonBegin">
-             <el-input v-model="form.afternoonBegin" maxlength="" placeholder="请输入午班开始"/>
+             <el-time-picker value-format="HH:mm:ss" v-model="form.afternoonBegin" maxlength="" placeholder="请输入午班开始"/>
            </el-form-item>
          </el-col>
       </el-row>
       <el-row :gutter="10">
          <el-col :span="12">
            <el-form-item label="午班结束" prop="afternoonEnd">
-             <el-input v-model="form.afternoonEnd" maxlength="" placeholder="请输入午班结束"/>
+             <el-time-picker value-format="HH:mm:ss" v-model="form.afternoonEnd" maxlength="" placeholder="请输入午班结束"/>
            </el-form-item>
          </el-col>
          <el-col :span="12">
            <el-form-item label="晚班开始" prop="nightBegin">
-             <el-input v-model="form.nightBegin" maxlength="" placeholder="请输入晚班开始"/>
+             <el-time-picker value-format="HH:mm:ss" v-model="form.nightBegin" maxlength="" placeholder="请输入晚班开始"/>
            </el-form-item>
          </el-col>
       </el-row>
       <el-row :gutter="10">
          <el-col :span="12">
            <el-form-item label="晚班结束" prop="nightEnd">
-             <el-input v-model="form.nightEnd" maxlength="" placeholder="请输入晚班结束"/>
+             <el-time-picker value-format="HH:mm:ss" v-model="form.nightEnd" maxlength="" placeholder="请输入晚班结束"/>
            </el-form-item>
          </el-col>
       </el-row>

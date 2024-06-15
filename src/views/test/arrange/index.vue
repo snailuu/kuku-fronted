@@ -12,43 +12,6 @@
           </el-form-item>
         </el-col>
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="早班开始">
-            <el-input v-model="queryForm.morningBegin" @keyup.enter="onSearch" clearable placeholder="请输入早班开始"/>
-          </el-form-item>
-        </el-col>
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="早班结束">
-            <el-input v-model="queryForm.morningEnd" @keyup.enter="onSearch" clearable placeholder="请输入早班结束"/>
-          </el-form-item>
-        </el-col>
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="午班开始">
-            <el-input v-model="queryForm.afternoonBegin" @keyup.enter="onSearch" clearable placeholder="请输入午班开始"/>
-          </el-form-item>
-        </el-col>
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="午班结束">
-            <el-input v-model="queryForm.afternoonEnd" @keyup.enter="onSearch" clearable placeholder="请输入午班结束"/>
-          </el-form-item>
-        </el-col>
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="晚班开始">
-            <el-input v-model="queryForm.nightBegin" @keyup.enter="onSearch" clearable placeholder="请输入晚班开始"/>
-          </el-form-item>
-        </el-col>
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="晚班结束">
-            <el-input v-model="queryForm.nightEnd" @keyup.enter="onSearch" clearable placeholder="请输入晚班结束"/>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="搜索">
-            <el-input v-model="queryForm.keyword" @keyup.enter="onSearch" clearable placeholder="请输入名称"/>
-          </el-form-item>
-        </el-col>
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
           <el-form-item label-width="0">
             <el-button type="primary" @click="onSearch">
               <el-icon>
@@ -65,6 +28,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+
     </el-form>
     <div v-auth="'arrange:add'" class="table-btn-box mb10">
       <el-button type="primary" @click="openDialog()">
@@ -119,6 +83,8 @@ import {deleteArrange, getArrangePage} from "@/api/test/arrange";
 import {ElMessage, ElMessageBox} from 'element-plus'
 import TableForm from './form.vue'
 import {calcTableIndex} from "@/utils/util";
+
+
 
 /** 查询参数 **/
 let queryForm: any = ref({
