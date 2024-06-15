@@ -179,7 +179,10 @@ const tableData = reactive({
 const getTableList = () => {
     tableLoading.value.status = true;
     getWorkingSchedulePage({...pagination, ...queryForm.value, ...orderBy.value}).then(res => {
-        tableData.data = calcTableIndex(res, pagination);;
+        tableData.data = calcTableIndex(res, pagination);
+        for(let i =0;i<tableData.data.length;i++){
+          tableData.data[i].workingDate = tableData.data[i].workingDate.split(" ")[0];
+        }
         pagination.total = res.total;
         tableLoading.value.status = false;
     })
