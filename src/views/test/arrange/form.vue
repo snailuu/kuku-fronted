@@ -6,6 +6,10 @@
         <el-col :span="12">
           <el-form-item label="班次类型" prop="type">
             <el-select v-model="form.type" clearable placeholder="请选择班次类型">
+              <el-option label="早班" :value="1"/>
+              <el-option label="午班" :value="2"/>
+              <el-option label="晚班" :value="3"/>
+
             </el-select>
           </el-form-item>
         </el-col>
