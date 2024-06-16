@@ -14,7 +14,35 @@
         </el-col>
          <el-col :span="12">
            <el-form-item label="值班人员" prop="userId">
-             <el-input v-model="form.userId" maxlength="20" placeholder="请输入值班人员"/>
+             <el-select
+                 v-model="form.userId"
+                 filterable
+                 remote
+                 reserve-keyword
+                 clearable
+                 placeholder="请输入值班人员姓名"
+                 :remote-method="getUserListByNickname"
+                 :loading="userListLoading.status"
+             >
+
+               <el-option
+                   v-for="item in userList"
+                   :key="item.id"
+                   :label="item.nickname"
+                   :value="item.id"
+               >
+                 <div class="flex items-between">
+                   <span>{{ item.nickname }}</span>
+
+                   <span style="color: rgba(167,167,167,0.91);margin-left: 1em;font-size: 0.9em">id={{ item.id }}</span>
+                 </div>
+               </el-option>
+               <template #loading>
+                 <svg class="circular" viewBox="0 0 50 50">
+                   <circle class="path" cx="25" cy="25" r="20" fill="none"/>
+                 </svg>
+               </template>
+             </el-select>
            </el-form-item>
          </el-col>
       </el-row>
@@ -48,12 +76,16 @@
 <script setup lang="ts">
 import {ElMessage, FormInstance, FormRules} from "element-plus";
 import {addWorkingSchedule, getWorkingSchedule, updateWorkingSchedule} from "@/api/test/workingSchedule";
+import {useDebounceFn} from "@vueuse/core";
+import {getSysUserListByNickname} from "@/api/user";
 
 const formRef = ref<FormInstance>()
 
 const emits = defineEmits<{
   (event: 'refresh'): void
 }>()
+
+
 
 // 表单
 let form: any = ref({
@@ -63,6 +95,35 @@ let form: any = ref({
     workingDate: null,
     status: null,
 });
+
+// 值班人员模糊查询临时列表
+const userList = ref([]);
+const userListLoading = ref({
+  status: false
+})
+
+/** 分页*/
+// 分页数据
+const pagination = reactive({
+  pageIndex: 1,
+  pageSize: 10,
+  total: 0
+})
+const orderBy = ref({})
+const getUserListByNickname = useDebounceFn((nickname: string) => {
+  userListLoading.status = true;
+  if (nickname) {
+    getSysUserListByNickname({...pagination, nickname, ...orderBy.value})
+        .then(res => {
+          userList.value = res.list;
+        })
+  } else {
+    userList.value = [];
+  }
+  userListLoading.status = false;
+
+}, 300)
+
 
 // 效验规则
 const rules = reactive<FormRules>({
