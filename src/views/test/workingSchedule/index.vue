@@ -15,6 +15,8 @@
           <!--          <el-form-item label="值班人员">-->
           <!--            <el-input v-model="queryForm.userId" @input="getUserListByNickname(queryForm.userId)" clearable placeholder="请输入值班人员"/>-->
           <!--          </el-form-item>-->
+          <el-form-item label="值班人员">
+
           <el-select
               v-model="queryForm.userId"
               filterable
@@ -26,19 +28,26 @@
               :remote-method="getUserListByNickname"
               :loading="userListLoading.status"
           >
+
             <el-option
                 v-for="item in userList"
                 :key="item.id"
                 :label="item.nickname"
                 :value="item.id"
-            />
+            >
+              <div class="flex items-between">
+                <span>{{ item.nickname }}</span>
+
+                <span style="color: rgba(167,167,167,0.91);margin-left: 1em;font-size: 0.9em">id={{ item.id }}</span>
+              </div>
+            </el-option>
             <template #loading>
               <svg class="circular" viewBox="0 0 50 50">
                 <circle class="path" cx="25" cy="25" r="20" fill="none"/>
               </svg>
             </template>
           </el-select>
-
+          </el-form-item>
         </el-col>
         <el-col :lg="8" :md="12" :sm="24" :xl="6">
           <el-form-item label="值班日期">
@@ -150,10 +159,13 @@ let queryForm: any = ref({
   status: null,
 });
 
+// 值班人员模糊查询临时列表
 const userList = ref([]);
 const userListLoading = ref({
   status: false
 })
+
+
 
 const getUserListByNickname = useDebounceFn((nickname: string) => {
   userListLoading.status = true;
@@ -278,4 +290,5 @@ getTableList();
 .card-box{
   margin: 20px;
 }
+
 </style>
