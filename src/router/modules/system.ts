@@ -2,12 +2,12 @@ const Layout = () => import("@/layout/index.vue");
 
 export default {
     path: "/system",
-    name:"System",
+    name: "System",
     component: Layout,
     redirect: "/role",
     meta: {
         title: "系统管理",
-        icon:'ele-setting'
+        icon: 'ele-setting'
     },
     children: [
         {
@@ -16,7 +16,7 @@ export default {
             component: () => import("@/views/system/user/index.vue"),
             meta: {
                 title: "用户管理",
-                icon:'ele-user'
+                icon: 'ele-user'
             }
         },
         {
@@ -25,7 +25,7 @@ export default {
             component: () => import("@/views/system/dept/index.vue"),
             meta: {
                 title: "部门管理",
-                icon:'ele-user'
+                icon: 'ele-user'
             }
         },
         {
@@ -34,7 +34,7 @@ export default {
             component: () => import("@/views/system/role/index.vue"),
             meta: {
                 title: "角色管理",
-                icon:'ele-user'
+                icon: 'ele-user'
             }
         },
         {
@@ -43,8 +43,17 @@ export default {
             component: () => import("@/views/system/menu/index.vue"),
             meta: {
                 title: "菜单管理",
-                icon:'ele-user'
+                icon: 'ele-user'
             }
         },
+        {
+            path: "/calendar",
+            name: "Calendar",
+            component: () => import("@/views/system/calendar.vue"),
+            meta: {
+                title: "排班日历",
+                icon: 'ele-user'
+            }
+        }
     ]
 } as RouteConfigsTable;
