@@ -34,6 +34,8 @@
         </el-col>
       </el-row>
     </el-form>
+  </el-card>
+  <el-card shadow="never" class="card-box">
     <!--    新 增-->
     <div class="table-btn-box mb10">
       <el-button type="primary" @click="openDialog">
@@ -188,4 +190,8 @@ const openAuthDialog = async (row: any) => {
 
 getTableList();
 </script>
-<style></style>
+<style scoped>
+.card-box{
+  margin: 20px;
+}
+</style>

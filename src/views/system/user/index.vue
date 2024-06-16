@@ -49,6 +49,8 @@
         </el-col>
       </el-row>
     </el-form>
+  </el-card>
+  <el-card shadow="never" class="card-box">
     <!--    新 增-->
     <div v-auth="'sys:user:add'" class="table-btn-box mb10">
       <el-button type="primary" @click="openDialog">
@@ -229,4 +231,8 @@ const openPswDialog = async (row: any) => {
 getRoleList();
 getTableList();
 </script>
-<style></style>
+<style scoped>
+.card-box{
+  margin: 20px;
+}
+</style>

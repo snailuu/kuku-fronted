@@ -78,6 +78,8 @@
         </el-col>
       </el-row>
     </el-form>
+  </el-card>
+  <el-card shadow="never" class="card-box">
     <div v-auth="'working:schedule:add'" class="table-btn-box mb10">
       <el-button type="primary" @click="openDialog()">
         <el-icon class="mr5">
@@ -126,7 +128,6 @@
     </el-table>
     <CustomPagination v-model:currentPage="pagination.pageIndex" v-model:pageSize="pagination.pageSize"
                       :total="pagination.total" @changePage="changePage"/>
-
     <TableForm ref="tableDialogRef" @refresh="getTableList"/>
 
   </el-card>
@@ -273,5 +274,8 @@ getTableList();
   stroke-width: 2;
   stroke: var(--el-color-primary);
   stroke-linecap: round;
+}
+.card-box{
+  margin: 20px;
 }
 </style>

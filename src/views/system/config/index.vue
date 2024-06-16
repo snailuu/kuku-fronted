@@ -1,8 +1,10 @@
 <template>
   <div>
-    <el-card shadow="never">
+    <el-card shadow="never" class="card-box">
       <!--    查询-->
       <custom-search :configure="searchConfig" @search="search"></custom-search>
+    </el-card>
+    <el-card shadow="never" class="card-box">
       <!--       新增-->
       <el-button type="primary" @click="openDialog" class="mb10">
         <el-icon class="mr5">
@@ -197,5 +199,8 @@ function openDialog(data = {}) {
       display: none;
     }
   }
+}
+.card-box{
+  margin: 20px;
 }
 </style>

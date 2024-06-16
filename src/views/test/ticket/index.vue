@@ -47,6 +47,8 @@
         </el-col>
       </el-row>
     </el-form>
+  </el-card>
+  <el-card shadow="never" class="card-box">
     <div v-auth="'ticket:add'" class="table-btn-box mb10">
       <el-button type="primary" @click="openDialog()">
         <el-icon class="mr5">
@@ -64,10 +66,10 @@
       <el-table-column prop="pictures" label="图片" align="center" show-overflow-tooltip/>
       <el-table-column prop="status" label="状态" align="center">
         <template #default="scope">
-<!--          <template #default="scope">-->
-<!--            <el-tag v-if="scope.row.status===true" type="success" disable-transitions>启用</el-tag>-->
-<!--            <el-tag v-else type="danger" disable-transitions>禁用</el-tag>-->
-<!--          </template>-->
+          <!--          <template #default="scope">-->
+          <!--            <el-tag v-if="scope.row.status===true" type="success" disable-transitions>启用</el-tag>-->
+          <!--            <el-tag v-else type="danger" disable-transitions>禁用</el-tag>-->
+          <!--          </template>-->
           <el-tag v-if="scope.row.status == 0" type="warning">待确定</el-tag>
           <el-tag v-else-if="scope.row.status == 1">进行中</el-tag>
           <el-tag v-else-if="scope.row.status == 2" type="success">已完成</el-tag>
@@ -112,97 +114,100 @@ import {calcTableIndex} from "@/utils/util";
 
 /** 查询参数 **/
 let queryForm: any = ref({
-    keyword: null,
-    userId: null,
-    title: null,
-    status: null,
+  keyword: null,
+  userId: null,
+  title: null,
+  status: null,
 });
 
 const tableLoading = ref({
-    status: false
+  status: false
 })
 
 // 查询
 const onSearch = () => {
-    pagination.pageIndex = 1;
-    getTableList();
+  pagination.pageIndex = 1;
+  getTableList();
 }
 // 重置
 const onReset = () => {
-    queryForm.value = {}
-    pagination.pageIndex = 1;
-    getTableList();
+  queryForm.value = {}
+  pagination.pageIndex = 1;
+  getTableList();
 }
 
 /** 分页*/
 // 分页数据
 const pagination = reactive({
-    pageIndex: 1,
-    pageSize: 10,
-    total: 0
+  pageIndex: 1,
+  pageSize: 10,
+  total: 0
 })
 // 翻页
 const changePage = (page: number) => {
-    pagination.pageIndex = page;
-    getTableList();
+  pagination.pageIndex = page;
+  getTableList();
 }
 
 /** 排序*/
 const orderBy = ref({})
 // 排序
 const sortChange = ({column, prop, order}) => {
-    if (order) {
-        orderBy.value.orderByColumn = prop;
-        orderBy.value.orderByAsc = order === "ascending";
-    } else {
-        orderBy.value = {}
-    }
-    pagination.pageIndex = 1;
-    getTableList();
+  if (order) {
+    orderBy.value.orderByColumn = prop;
+    orderBy.value.orderByAsc = order === "ascending";
+  } else {
+    orderBy.value = {}
+  }
+  pagination.pageIndex = 1;
+  getTableList();
 }
 
 /** 表格*/
 // 表格数据
 const tableData = reactive({
-    data: [],
+  data: [],
 })
 // 获取表格列表
 const getTableList = () => {
-    tableLoading.value.status = true;
-    getTicketPage({...pagination, ...queryForm.value, ...orderBy.value}).then(res => {
-        tableData.data = calcTableIndex(res, pagination);;
-        pagination.total = res.total;
-        tableLoading.value.status = false;
-    })
+  tableLoading.value.status = true;
+  getTicketPage({...pagination, ...queryForm.value, ...orderBy.value}).then(res => {
+    tableData.data = calcTableIndex(res, pagination);
+    ;
+    pagination.total = res.total;
+    tableLoading.value.status = false;
+  })
 }
 // 删除
 const delTable = (id: string) => {
-    ElMessageBox.confirm(
-            '是否确认删除本条数据？',
-            '提示',
-            {
-                confirmButtonText: '确认',
-                cancelButtonText: '取消',
-                type: 'warning',
-            })
-            .then(() => {
-                deleteTicket(id).then(() => {
-                    ElMessage.success('删除成功');
-                    getTableList();
-                })
-            }).catch(() => {
-    })
+  ElMessageBox.confirm(
+      '是否确认删除本条数据？',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+      .then(() => {
+        deleteTicket(id).then(() => {
+          ElMessage.success('删除成功');
+          getTableList();
+        })
+      }).catch(() => {
+  })
 }
 
 /** 添加，编辑*/
 const tableDialogRef = ref()
 // 打开弹框
 const openDialog = async (id: string) => {
-    await tableDialogRef.value.openDialog(id);
+  await tableDialogRef.value.openDialog(id);
 }
 
 getTableList();
 </script>
 <style scoped>
-
+.card-box{
+  margin: 20px;
+}
 </style>
