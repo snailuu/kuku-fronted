@@ -49,7 +49,7 @@
       <el-row :gutter="10">
         <el-col :span="12">
           <el-form-item label="值班日期">
-            <el-date-picker v-model="form.workingDate" type="date" placeholder="请选择值班日期"/>
+            <el-date-picker v-model="form.workingDate" value-format="YYYY-MM-DD" type="date" placeholder="请选择值班日期"/>
           </el-form-item>
         </el-col>
         <el-col :span="12">
