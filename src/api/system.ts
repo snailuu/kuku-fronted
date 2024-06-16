@@ -22,3 +22,7 @@ export function logoutApi() {
     return http.post(Api.Logout)
 }
 
+// 获取平台信息
+export function getServerInfoApi() {
+    return http.post('/admin/serverInfo/getServerInfo')
+}
