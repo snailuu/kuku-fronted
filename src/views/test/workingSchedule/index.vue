@@ -12,9 +12,33 @@
           </el-form-item>
         </el-col>
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="值班人员">
-            <el-input v-model="queryForm.userId" @keyup.enter="onSearch" clearable placeholder="请输入值班人员"/>
-          </el-form-item>
+          <!--          <el-form-item label="值班人员">-->
+          <!--            <el-input v-model="queryForm.userId" @input="getUserListByNickname(queryForm.userId)" clearable placeholder="请输入值班人员"/>-->
+          <!--          </el-form-item>-->
+          <el-select
+              v-model="queryForm.userId"
+              filterable
+              remote
+              reserve-keyword
+              clearable
+
+              placeholder="请输入值班人员姓名"
+              :remote-method="getUserListByNickname"
+              :loading="userListLoading.status"
+          >
+            <el-option
+                v-for="item in userList"
+                :key="item.id"
+                :label="item.nickname"
+                :value="item.id"
+            />
+            <template #loading>
+              <svg class="circular" viewBox="0 0 50 50">
+                <circle class="path" cx="25" cy="25" r="20" fill="none"/>
+              </svg>
+            </template>
+          </el-select>
+
         </el-col>
         <el-col :lg="8" :md="12" :sm="24" :xl="6">
           <el-form-item label="值班日期">
@@ -27,20 +51,15 @@
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
           <el-form-item label="值班状态">
             <el-select v-model="queryForm.status" clearable placeholder="请选择值班状态">
-                <el-option value="1" label="计划中"/>
-                <el-option value="2" label="进行中"/>
-                <el-option value="3" label="已打卡"/>
-                <el-option value="4" label="缺勤"/>
-              </el-select>
+              <el-option value="1" label="计划中"/>
+              <el-option value="2" label="进行中"/>
+              <el-option value="3" label="已打卡"/>
+              <el-option value="4" label="缺勤"/>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="搜索">
-            <el-input v-model="queryForm.keyword" @keyup.enter="onSearch" clearable placeholder="请输入名称"/>
-          </el-form-item>
-        </el-col>
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
           <el-form-item label-width="0">
             <el-button type="primary" @click="onSearch">
@@ -76,7 +95,7 @@
           <el-tag v-else-if="scope.row.arrangeType == 3" type="success">晚班</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="userId" label="值班人员" align="center" show-overflow-tooltip/>
+      <el-table-column prop="nickname" label="值班人员" align="center" show-overflow-tooltip/>
       <el-table-column prop="workingDate" label="值班日期" align="center" min-width="150"/>
       <el-table-column prop="status" label="值班状态" align="center">
         <template #default="scope">
@@ -117,104 +136,142 @@ import {deleteWorkingSchedule, getWorkingSchedulePage} from "@/api/test/workingS
 import {ElMessage, ElMessageBox} from 'element-plus'
 import TableForm from './form.vue'
 import {calcTableIndex} from "@/utils/util";
+import {useDebounceFn} from "@vueuse/core";
+import {getSysUserListByNickname} from "@/api/user";
+
 
 /** 查询参数 **/
 let queryForm: any = ref({
-    keyword: null,
-    arrangeType: null,
-    userId: null,
-    workingDate: null,
-    status: null,
+  keyword: null,
+  arrangeType: null,
+  userId: null,
+  workingDate: null,
+  status: null,
 });
 
+const userList = ref([]);
+const userListLoading = ref({
+  status: false
+})
+
+const getUserListByNickname = useDebounceFn((nickname: string) => {
+  userListLoading.status = true;
+  pagination.pageIndex = 1;
+  if (nickname) {
+    getSysUserListByNickname({...pagination, nickname, ...orderBy.value})
+        .then(res => {
+          userList.value = res.list;
+        })
+  } else {
+    userList.value = [];
+  }
+  userListLoading.status = false;
+
+}, 300)
+
+
 const tableLoading = ref({
-    status: false
+  status: false
 })
 
 // 查询
 const onSearch = () => {
-    pagination.pageIndex = 1;
-    getTableList();
+  pagination.pageIndex = 1;
+  getTableList();
 }
 // 重置
 const onReset = () => {
-    queryForm.value = {}
-    pagination.pageIndex = 1;
-    getTableList();
+  queryForm.value = {}
+  pagination.pageIndex = 1;
+  getTableList();
 }
 
 /** 分页*/
 // 分页数据
 const pagination = reactive({
-    pageIndex: 1,
-    pageSize: 10,
-    total: 0
+  pageIndex: 1,
+  pageSize: 10,
+  total: 0
 })
 // 翻页
 const changePage = (page: number) => {
-    pagination.pageIndex = page;
-    getTableList();
+  pagination.pageIndex = page;
+  getTableList();
 }
 
 /** 排序*/
 const orderBy = ref({})
 // 排序
 const sortChange = ({column, prop, order}) => {
-    if (order) {
-        orderBy.value.orderByColumn = prop;
-        orderBy.value.orderByAsc = order === "ascending";
-    } else {
-        orderBy.value = {}
-    }
-    pagination.pageIndex = 1;
-    getTableList();
+  if (order) {
+    orderBy.value.orderByColumn = prop;
+    orderBy.value.orderByAsc = order === "ascending";
+  } else {
+    orderBy.value = {}
+  }
+  pagination.pageIndex = 1;
+  getTableList();
 }
 
 /** 表格*/
 // 表格数据
 const tableData = reactive({
-    data: [],
+  data: [],
 })
 // 获取表格列表
 const getTableList = () => {
-    tableLoading.value.status = true;
-    getWorkingSchedulePage({...pagination, ...queryForm.value, ...orderBy.value}).then(res => {
-        tableData.data = calcTableIndex(res, pagination);
-        for(let i =0;i<tableData.data.length;i++){
-          tableData.data[i].workingDate = tableData.data[i].workingDate.split(" ")[0];
-        }
-        pagination.total = res.total;
-        tableLoading.value.status = false;
-    })
+  tableLoading.value.status = true;
+  getWorkingSchedulePage({...pagination, ...queryForm.value, ...orderBy.value}).then(res => {
+    tableData.data = calcTableIndex(res, pagination);
+    for (let i = 0; i < tableData.data.length; i++) {
+      tableData.data[i].workingDate = tableData.data[i].workingDate.split(" ")[0];
+    }
+    pagination.total = res.total;
+    tableLoading.value.status = false;
+  })
 }
 // 删除
 const delTable = (id: string) => {
-    ElMessageBox.confirm(
-            '是否确认删除本条数据？',
-            '提示',
-            {
-                confirmButtonText: '确认',
-                cancelButtonText: '取消',
-                type: 'warning',
-            })
-            .then(() => {
-                deleteWorkingSchedule(id).then(() => {
-                    ElMessage.success('删除成功');
-                    getTableList();
-                })
-            }).catch(() => {
-    })
+  ElMessageBox.confirm(
+      '是否确认删除本条数据？',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+      .then(() => {
+        deleteWorkingSchedule(id).then(() => {
+          ElMessage.success('删除成功');
+          getTableList();
+        })
+      }).catch(() => {
+  })
 }
 
 /** 添加，编辑*/
 const tableDialogRef = ref()
 // 打开弹框
 const openDialog = async (id: string) => {
-    await tableDialogRef.value.openDialog(id);
+  await tableDialogRef.value.openDialog(id);
 }
 
 getTableList();
 </script>
 <style scoped>
+.circular {
+  display: inline;
+  height: 30px;
+  width: 30px;
+  animation: loading-rotate 2s linear infinite;
+}
 
+.path {
+  animation: loading-dash 1.5s ease-in-out infinite;
+  stroke-dasharray: 90, 150;
+  stroke-dashoffset: 0;
+  stroke-width: 2;
+  stroke: var(--el-color-primary);
+  stroke-linecap: round;
+}
 </style>

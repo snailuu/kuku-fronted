@@ -10,6 +10,7 @@ import {ListResultType, ResultType} from "@/api/types";
 enum Api {
     updateSysUser = '/admin/sysUser/updateSysUser',
     getSysUserList = '/admin/sysUser/getSysUserPage',
+    getSysUserListByNickname = '/admin/sysUser/getSysUserPageByNickname',
     getSysUser = '/admin/sysUser/getSysUser/',
     deleteSysUser = '/admin/sysUser/deleteSysUser/',
     addSysUser = '/admin/sysUser/addSysUser',
@@ -24,6 +25,11 @@ enum Api {
 // 用户分页列表
 export function getSysUserList(data: GetSysUserListParamsType) {
     return http.post<ListResultType>(Api.getSysUserList, data)
+}
+
+// 根据昵称查询用户
+export function getSysUserListByNickname(data: GetSysUserListParamsType) {
+    return http.post<ListResultType>(Api.getSysUserListByNickname, data)
 }
 
 // 添加用户
