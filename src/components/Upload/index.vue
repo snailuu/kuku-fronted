@@ -32,6 +32,9 @@ const typeList:Record<string, string[]>={
   pdf:['pdf'],
 }
 
+// 消息提示
+let message = null;
+
 const props = withDefaults(defineProps<{
   value: NullType<string>,
   customStyle?:any,
@@ -64,6 +67,8 @@ const uploadSuccess: UploadProps['onSuccess'] = (
 ) => {
   data.imageUrl = response.url;
   emits('change', response.url);
+  message.close();
+  ElMessage.success('上传成功')
 }
 
 // 上传头像
@@ -83,6 +88,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     ElMessage.error(`抱歉，暂时不支持大于${props.size}M的文件上传`)
     return false;
   }
+  message = ElMessage.info(`文件上传中，请稍后...`)
   return true
 }
 
