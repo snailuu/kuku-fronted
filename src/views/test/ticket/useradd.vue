@@ -1,17 +1,7 @@
 <template>
-    <el-dialog :model-value="dialogData.isShow" :title="dialogData.id ? '编辑' : '新增'" @close="closeDialog" draggable>
-        <el-form :model="form" ref="formRef" :rules="rules" label-width="90px">
+    <el-card style="width: 800px;height: 550px; margin: 50px auto;">
+        <el-form :model="form" ref="formRef" :rules="rules" label-width="90px" style="padding-top: 20px;">
             <el-row :gutter="10">
-                <el-col :span="24">
-                    <el-form-item label="工单uuid" prop="uuid">
-                        <el-input v-model="form.uuid" maxlength="256" placeholder="请输入工单uuid" />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item label="用户id" prop="userId">
-                        <el-input type="number" v-model="form.userId" placeholder="请输入用户id" />
-                    </el-form-item>
-                </el-col>
                 <el-col :span="24">
                     <el-form-item label="工单标题" prop="title">
                         <el-input v-model="form.title" maxlength="128" placeholder="请输入工单标题" />
@@ -25,16 +15,6 @@
                 <el-col :span="24">
                     <el-form-item label="图片" prop="pictures">
                         <Upload v-model:value="form.pictures" type="head" :customStyle="{}" />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item label="状态" prop="status">
-                        <el-select v-model="form.status" clearable placeholder="请选择状态">
-                            <el-option value="0" label="待确定" />
-                            <el-option value="1" label="进行中" />
-                            <el-option value="2" label="已完成" />
-                            <el-option value="3" label="关闭" />
-                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
@@ -52,20 +32,14 @@
                         <el-input v-model="form.contactPhone" maxlength="128" placeholder="请输入联系手机号" />
                     </el-form-item>
                 </el-col>
-                <el-col :span="24">
-                    <el-form-item label="创建人" prop="createdBy">
-                        <el-input v-model="form.createdBy" maxlength="32" placeholder="请输入创建人" />
-                    </el-form-item>
-                </el-col>
             </el-row>
         </el-form>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button type="primary" @click="submit">确定</el-button>
-                <el-button @click="closeDialog">取消</el-button>
-            </div>
-        </template>
-    </el-dialog>
+        <div style="width: 200px; height: 50px;margin: 10px auto;">
+            <el-button type="primary" @click="submit">确定</el-button>
+            <el-button @click="closeDialog">取消</el-button>
+        </div>
+    </el-card>
+
 </template>
 
 <script setup lang="ts">
@@ -88,7 +62,7 @@ let form: any = ref({
     title: null,
     body: null,
     pictures: null,
-    status: null,
+    status: 0,
     ticketType: null,
     contactEmail: null,
     contactPhone: null,
