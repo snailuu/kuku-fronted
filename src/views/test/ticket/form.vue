@@ -25,7 +25,8 @@
         </el-col>
          <el-col :span="24">
            <el-form-item label="图片" prop="pictures">
-             <el-input v-model="form.pictures" maxlength="255" placeholder="请输入图片"/>
+             <Upload v-model:value="form.pictures" type="head"
+                     :customStyle="{}"/>
            </el-form-item>
          </el-col>
         <el-col :span="24">
@@ -72,7 +73,9 @@
 <script setup lang="ts">
 import {ElMessage, FormInstance, FormRules} from "element-plus";
 import {addTicket, getTicket, updateTicket} from "@/api/test/ticket";
-
+import Upload from "@/components/Upload/index.vue";
+import {store} from '@/store'
+import {useUserStore} from "@/store/modules/user";
 const formRef = ref<FormInstance>()
 
 const emits = defineEmits<{
@@ -149,6 +152,9 @@ const closeDialog = () => {
 
 const submit = async () => {
    if (!formRef.value) return;
+  const user = await useUserStore();
+  form.value.userId = user.userid;
+  form.updatedBy = user.userid;
    await formRef.value.validate((valid: any) => {
    if (valid) {
        let data = form.value;
@@ -159,6 +165,7 @@ const submit = async () => {
          emits('refresh');
        })
      } else {
+       form.createdBy = user.userid;
        addTicket({...data}).then(() => {
        ElMessage.success('操作成功');
        closeDialog();

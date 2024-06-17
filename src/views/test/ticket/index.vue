@@ -57,13 +57,38 @@
         新 增
       </el-button>
     </div>
-    <el-table v-loading="tableLoading.status" :data="tableData.data" border row-key="id" @sort-change="sortChange">
+    <el-table v-loading="tableLoading.status"
+              :data="tableData.data"
+              border
+              row-key="id"
+              @sort-change="sortChange"
+              empty-text="暂无数据"
+              :cell-style="cellStyle"
+    >
       <el-table-column prop="_tableIndex" label="序号" align="center" width="50px"/>
       <el-table-column prop="uuid" label="工单uuid" align="center" show-overflow-tooltip/>
-      <el-table-column prop="userId" label="用户id" align="center" show-overflow-tooltip/>
+      <el-table-column prop="userId" label="用户id" align="center" />
       <el-table-column prop="title" label="工单标题" align="center" show-overflow-tooltip/>
       <el-table-column prop="body" label="内容" align="center" show-overflow-tooltip/>
-      <el-table-column prop="pictures" label="图片" align="center" show-overflow-tooltip/>
+      <el-table-column prop="pictures" label="图片" align="center">
+        <template #default="scope">
+          <el-image
+              v-if="scope.row.pictures?.startsWith('http')"
+              style="width: 100px; height: 100px"
+              :src="scope.row.pictures"
+              :zoom-rate="1.2"
+              :max-scale="7"
+              :min-scale="0.2"
+              preview-teleported="true"
+              :preview-src-list="imgSrcList"
+              :initial-index="scope.row.index"
+              fit="cover"
+          />
+          <span v-else style="color: #8c939d">
+            暂无图片
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column prop="status" label="状态" align="center">
         <template #default="scope">
           <!--          <template #default="scope">-->
@@ -75,7 +100,6 @@
           <el-tag v-else-if="scope.row.status == 2" type="success">已完成</el-tag>
           <el-tag v-else-if="scope.row.status == 3" type="info">关闭</el-tag>
           <el-tag v-else type="info">未知状态</el-tag>
-
         </template>
       </el-table-column>
       <el-table-column prop="ticketType" label="工单类型" align="center" show-overflow-tooltip/>
@@ -111,7 +135,6 @@ import {deleteTicket, getTicketPage} from "@/api/test/ticket";
 import {ElMessage, ElMessageBox} from 'element-plus'
 import TableForm from './form.vue'
 import {calcTableIndex} from "@/utils/util";
-
 /** 查询参数 **/
 let queryForm: any = ref({
   keyword: null,
@@ -124,6 +147,19 @@ const tableLoading = ref({
   status: false
 })
 
+// 图片预览列表
+const imgSrcList = ref([]);
+// 表格字段为空操作
+const cellStyle= ({ row, column, rowIndex, columnIndex })=> {
+  if (row[column.property] == null) {
+    row[column.property] = '--'
+    return{
+      color: '#a51a1a'
+    }
+  }
+  return {}
+
+}
 // 查询
 const onSearch = () => {
   pagination.pageIndex = 1;
@@ -173,7 +209,8 @@ const getTableList = () => {
   tableLoading.value.status = true;
   getTicketPage({...pagination, ...queryForm.value, ...orderBy.value}).then(res => {
     tableData.data = calcTableIndex(res, pagination);
-    ;
+    imgSrcList.value = tableData.data.map(item => item.pictures);
+    console.log(imgSrcList)
     pagination.total = res.total;
     tableLoading.value.status = false;
   })
@@ -209,5 +246,9 @@ getTableList();
 <style scoped>
 .card-box{
   margin: 20px;
+}
+.el-image {
+  width: 50vw;
+  height: 200px;
 }
 </style>
