@@ -124,6 +124,10 @@ const closeDialog = () => {
 
 const submit = async () => {
     if (!formRef.value) return;
+    if (!regex.email.test(form.value.contactEmail)) {
+        ElMessage.error('邮箱格式不正确,仅支持163和qq邮箱');
+        return;
+    }
     const user = await useUserStore();
     form.value.userId = user.userid;
     form.updatedBy = user.userid;
@@ -147,7 +151,9 @@ const submit = async () => {
         }
     })
 }
-
+const regex = {
+    email: /^([A-Za-z0-9_\-\.])+\@(163.com|qq.com|42du.cn)$/,
+}
 defineExpose({
     openDialog,
 });
