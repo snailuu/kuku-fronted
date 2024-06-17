@@ -17,20 +17,19 @@ export const useUserStore = defineStore({
     id: 'user',
     state: (): userType => ({
         userinfo: {
-            deptId: null,
-            deptName: null,
-            nickname: '',
-            roleIds: [],
-            roleNames: [],
-            id: '',
-            username: '',
-            head:'',
-            gender:0,
-            email:'',
-            phone:'',
-            createTime:'',
-            admin:false,
-            permissions:[]
+            userId: "",
+            username: "",
+            nickname: "",
+            phone: "",
+            email: "",
+            admin: false,
+            roleIds: "",
+            roleCode: "",
+            roleName: "",
+            loginTime: "",
+            systemType: "",
+            createTime: "",
+            permissions: []
         },
         menuList: []
     }),
@@ -43,6 +42,9 @@ export const useUserStore = defineStore({
                 paths: ['userinfo']
             },
         ]
+    },
+    getters:{
+      userid:(state)=>state.userinfo.userId
     },
     actions: {
         /**

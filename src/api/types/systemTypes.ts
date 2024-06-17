@@ -10,19 +10,18 @@ export type LoginResult = {
 
 /** 获取当前登录用户信息返回数据类型*/
 export type LoginUserInfoResult = {
-    id:string
-    deptId:NullType<string>,
-    deptName:NullType<string>,
+    userId:string
     nickname:string,
-    roleIds:Array<string>,
-    roleNames:Array<string>,
+    roleIds:string,
+    roleCode:string,
+    roleName:string,
     username:string
     phone:string
     email:string
-    gender:number
-    head:NullType<string>
     createTime:string,
     admin:boolean
+    loginTime: string,
+    systemType: string,
     // 用户权限数组
     permissions:[]
 };
