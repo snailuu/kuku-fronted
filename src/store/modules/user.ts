@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {store} from "@/store";
-import {LoginParamsType, LoginUserInfoResult} from "@/api/types/systemTypes";
-import {loginApi, logoutApi,getLoginUserInfoApi} from '@/api/system'
+import {LoginParamsType, LoginUserInfoResult, RegisterParamsType} from "@/api/types/systemTypes";
+import {loginApi, logoutApi, getLoginUserInfoApi, registerApi} from '@/api/system'
 import {ElMessage} from "element-plus";
 import {removeToken, setToken} from "@/utils/auth";
 import {computeDate, formatGreet} from "@/utils";
@@ -62,6 +62,19 @@ export const useUserStore = defineStore({
                             ElMessage.success(`${formatGreet(new Date())}，${userRes.nickname}`);
                             resolve(res);
                         });
+                    }
+                })
+            })
+        },
+        /**
+         * @description:注册
+         */
+        async register(data: RegisterParamsType){
+            return new Promise((resolve) => {
+                registerApi(data).then((res) => {
+                    if (res) {
+                        ElMessage.success(`注册成功`);
+                        resolve(res);
                     }
                 })
             })

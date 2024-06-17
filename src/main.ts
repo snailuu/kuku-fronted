@@ -12,6 +12,8 @@ import 'virtual:svg-icons-register'
 import "@/style/element/variarbles.scss";
 // 导入公共样式
 import "@/style/index.scss";
+// 动画样式
+import 'animate.css';
 
 import "@/router/permission"
 

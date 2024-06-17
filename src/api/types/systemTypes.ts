@@ -3,10 +3,20 @@ export interface LoginParamsType {
     password: string;
 }
 
+export interface RegisterParamsType {
+    username: string;
+    password: string;
+    email: string;
+}
+
 export type LoginResult = {
     /** token */
     token: string;
 };
+
+export type RegisterResult = {
+    username: string
+}
 
 /** 获取当前登录用户信息返回数据类型*/
 export type LoginUserInfoResult = {
