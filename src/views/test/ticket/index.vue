@@ -5,23 +5,9 @@
       <el-row :gutter="20">
         <el-col :sm="24" :md="12" :lg="8" :xl="6" v-if="isAdmin">
           <el-form-item label="值班人员">
-            <el-select
-                v-model="queryForm.userId"
-                filterable
-                remote
-                reserve-keyword
-                clearable
-
-                placeholder="请输入值班人员姓名"
-                :remote-method="getUserListByNickname"
-                :loading="userListLoading.status"
-            >
-              <el-option
-                  v-for="item in userList"
-                  :key="item.id"
-                  :label="item.nickname"
-                  :value="item.id"
-              >
+            <el-select v-model="queryForm.userId" filterable remote reserve-keyword clearable placeholder="请输入值班人员姓名"
+              :remote-method="getUserListByNickname" :loading="userListLoading.status">
+              <el-option v-for="item in userList" :key="item.id" :label="item.nickname" :value="item.id">
                 <div class="flex items-between">
                   <span>{{ item.nickname }}</span>
 
@@ -30,7 +16,7 @@
               </el-option>
               <template #loading>
                 <svg class="circular" viewBox="0 0 50 50">
-                  <circle class="path" cx="25" cy="25" r="20" fill="none"/>
+                  <circle class="path" cx="25" cy="25" r="20" fill="none" />
                 </svg>
               </template>
             </el-select>
@@ -38,16 +24,16 @@
         </el-col>
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
           <el-form-item label="工单标题">
-            <el-input v-model="queryForm.title" @keyup.enter="onSearch" clearable placeholder="请输入工单标题"/>
+            <el-input v-model="queryForm.title" @keyup.enter="onSearch" clearable placeholder="请输入工单标题" />
           </el-form-item>
         </el-col>
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
           <el-form-item label="状态">
             <el-select v-model="queryForm.status" clearable placeholder="请选择状态">
-              <el-option value="0" label="待确定"/>
-              <el-option value="1" label="进行中"/>
-              <el-option value="2" label="已完成"/>
-              <el-option value="3" label="关闭"/>
+              <el-option value="0" label="待确定" />
+              <el-option value="1" label="进行中" />
+              <el-option value="2" label="已完成" />
+              <el-option value="3" label="关闭" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -57,13 +43,13 @@
           <el-form-item label-width="0">
             <el-button type="primary" @click="onSearch">
               <el-icon>
-                <ele-search/>
+                <ele-search />
               </el-icon>
               <span class="search-btn__left">查询</span>
             </el-button>
             <el-button @click="onReset">
               <el-icon>
-                <ele-refresh/>
+                <ele-refresh />
               </el-icon>
               <span class="search-btn__left">重置</span>
             </el-button>
@@ -76,40 +62,23 @@
     <div v-auth="'ticket:add'" class="table-btn-box mb10" v-if="isAdmin">
       <el-button type="primary" @click="openDialog()">
         <el-icon class="mr5">
-          <ele-circle-plus/>
+          <ele-circle-plus />
         </el-icon>
         新 增
       </el-button>
     </div>
-    <el-table v-loading="tableLoading.status"
-              :data="tableData.data"
-              border
-              row-key="id"
-              @sort-change="sortChange"
-              empty-text="暂无数据"
-              :cell-style="cellStyle"
-    >
-      <el-table-column prop="_tableIndex" label="序号" align="center" width="50px"/>
-      <el-table-column prop="uuid" label="工单uuid" align="center" show-overflow-tooltip/>
-      <el-table-column prop="userId" label="用户id" align="center" v-if="isAdmin"/>
-      <el-table-column prop="title" label="工单标题" align="center" show-overflow-tooltip/>
-      <el-table-column prop="body" label="内容" align="center" show-overflow-tooltip/>
+    <el-table v-loading="tableLoading.status" :data="tableData.data" border row-key="id" @sort-change="sortChange"
+      empty-text="暂无数据" :cell-style="cellStyle">
+      <el-table-column prop="_tableIndex" label="序号" align="center" width="50px" />
+      <el-table-column prop="uuid" label="工单uuid" align="center" show-overflow-tooltip />
+      <el-table-column prop="userId" label="用户id" align="center" v-if="isAdmin" />
+      <el-table-column prop="title" label="工单标题" align="center" show-overflow-tooltip />
+      <el-table-column prop="body" label="内容" align="center" show-overflow-tooltip />
       <el-table-column prop="pictures" label="图片" align="center">
         <template #default="scope">
-          <el-image
-              v-if="scope.row.pictures?.startsWith('http')"
-              style="width: 100px; height: 100px"
-              :src="scope.row.pictures"
-              :zoom-rate="1.2"
-              :max-scale="7"
-              :min-scale="0.2"
-              preview-teleported="true"
-              :preview-src-list="imgSrcList"
-              :initial-index="scope.$index"
-              fit="cover"
-              lazy
-              loading="lazy"
-          />
+          <el-image v-if="scope.row.pictures?.startsWith('http')" style="width: 100px; height: 100px"
+            :src="scope.row.pictures" :zoom-rate="1.2" :max-scale="7" :min-scale="0.2" preview-teleported="true"
+            :preview-src-list="imgSrcList" :initial-index="scope.$index" fit="cover" lazy loading="lazy" />
           <span v-else style="color: #8c939d">
             暂无图片
           </span>
@@ -167,19 +136,19 @@
           <el-tag v-else type="info">未知类型</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="contactEmail" label="联系邮箱" align="center" show-overflow-tooltip/>
-      <el-table-column prop="contactPhone" label="联系手机号" align="center" show-overflow-tooltip/>
+      <el-table-column prop="contactEmail" label="联系邮箱" align="center" show-overflow-tooltip />
+      <el-table-column prop="contactPhone" label="联系手机号" align="center" show-overflow-tooltip />
       <el-table-column label="操作" fixed="right" align="center" min-width="116" v-if="isAdmin">
         <template #default="scope">
           <el-button v-auth="'ticket:update'" link type="primary" @click="openDialog(scope.row.id)">
             <el-icon>
-              <ele-edit/>
+              <ele-edit />
             </el-icon>
             修改
           </el-button>
           <el-button v-auth="'ticket:delete'" link type="primary" @click="delTable(scope.row.id)">
             <el-icon>
-              <ele-delete/>
+              <ele-delete />
             </el-icon>
             删除
           </el-button>
@@ -188,20 +157,20 @@
       </el-table-column>
     </el-table>
     <CustomPagination v-model:currentPage="pagination.pageIndex" v-model:pageSize="pagination.pageSize"
-                      :total="pagination.total" @changePage="changePage"/>
+      :total="pagination.total" @changePage="changePage" />
 
-    <TableForm ref="tableDialogRef" @refresh="getTableList"/>
+    <TableForm ref="tableDialogRef" @refresh="getTableList" />
 
   </el-card>
 </template>
 <script lang="ts" setup>
-import {deleteTicket, getTicketPage} from "@/api/test/ticket";
-import {ElMessage, ElMessageBox} from 'element-plus'
+import { deleteTicket, getTicketPage } from "@/api/test/ticket";
+import { ElMessage, ElMessageBox } from 'element-plus'
 import TableForm from './form.vue'
-import {calcTableIndex} from "@/utils/util";
-import {useUserStore} from "@/store/modules/user";
-import {useDebounceFn} from "@vueuse/core";
-import {getSysUserListByNickname} from "@/api/user";
+import { calcTableIndex } from "@/utils/util";
+import { useUserStore } from "@/store/modules/user";
+import { useDebounceFn } from "@vueuse/core";
+import { getSysUserListByNickname } from "@/api/user";
 /** 查询参数 **/
 let queryForm: any = ref({
   keyword: null,
@@ -223,10 +192,10 @@ const getUserListByNickname = useDebounceFn((nickname: string) => {
   userListLoading.status = true;
   pagination.pageIndex = 1;
   if (nickname) {
-    getSysUserListByNickname({...pagination, nickname, ...orderBy.value})
-        .then(res => {
-          userList.value = res.list;
-        })
+    getSysUserListByNickname({ ...pagination, nickname, ...orderBy.value })
+      .then(res => {
+        userList.value = res.list;
+      })
   } else {
     userList.value = [];
   }
@@ -241,10 +210,10 @@ const tableLoading = ref({
 // 图片预览列表
 const imgSrcList = ref([]);
 // 表格字段为空操作
-const cellStyle= ({ row, column, rowIndex, columnIndex })=> {
+const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
   if (row[column.property] == null) {
     row[column.property] = '--'
-    return{
+    return {
       color: '#a51a1a'
     }
   }
@@ -252,10 +221,11 @@ const cellStyle= ({ row, column, rowIndex, columnIndex })=> {
 
 }
 
-const getRandomType = ()=> {
-  const types = ["primary", "success", "info", "warning", "danger"];
-  const randomIndex = Math.floor(Math.random() * types.length);
-  return types[randomIndex];
+const getRandomType = () => {
+  // const types = ["primary", "success", "info", "warning", "danger"];
+  // const randomIndex = Math.floor(Math.random() * types.length);
+  // return types[randomIndex];
+  return "primary"
 }
 
 // 查询
@@ -286,7 +256,7 @@ const changePage = (page: number) => {
 /** 排序*/
 const orderBy = ref({})
 // 排序
-const sortChange = ({column, prop, order}) => {
+const sortChange = ({ column, prop, order }) => {
   if (order) {
     orderBy.value.orderByColumn = prop;
     orderBy.value.orderByAsc = order === "ascending";
@@ -304,17 +274,17 @@ const tableData = reactive({
 })
 
 // 当前用户id以及是否是管理员
-const {userid,isAdmin} = useUserStore();
+const { userid, isAdmin } = useUserStore();
 
 
 // 获取表格列表
 const getTableList = () => {
   tableLoading.value.status = true;
-  if(!isAdmin){
+  if (!isAdmin) {
     queryForm.value.userId = userid;
   }
-  console.log(userid,isAdmin);
-  getTicketPage({...pagination, ...queryForm.value, ...orderBy.value}).then(res => {
+  console.log(userid, isAdmin);
+  getTicketPage({ ...pagination, ...queryForm.value, ...orderBy.value }).then(res => {
     tableData.data = calcTableIndex(res, pagination);
     imgSrcList.value = tableData.data.map(item => item.pictures);
     console.log(imgSrcList)
@@ -325,20 +295,20 @@ const getTableList = () => {
 // 删除
 const delTable = (id: string) => {
   ElMessageBox.confirm(
-      '是否确认删除本条数据？',
-      '提示',
-      {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
+    '是否确认删除本条数据？',
+    '提示',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+    .then(() => {
+      deleteTicket(id).then(() => {
+        ElMessage.success('删除成功');
+        getTableList();
       })
-      .then(() => {
-        deleteTicket(id).then(() => {
-          ElMessage.success('删除成功');
-          getTableList();
-        })
-      }).catch(() => {
-  })
+    }).catch(() => {
+    })
 }
 
 /** 添加，编辑*/
@@ -351,9 +321,10 @@ const openDialog = async (id: string) => {
 getTableList();
 </script>
 <style scoped>
-.card-box{
+.card-box {
   margin: 20px;
 }
+
 .el-image {
   width: 50vw;
   height: 200px;
