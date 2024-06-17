@@ -170,7 +170,7 @@ const downloadCode = async (tableNames?: string[], generatorType?: number) => {
     // 下载代码
     let downloadFileName = ""
     if (tableNames?.length > 1) {
-      downloadFileName = "spring-boot-plus-code.zip";
+      downloadFileName = "kuku-fronted-code.zip";
     } else {
       if (tableNames) {
         downloadFileName = tableNames[0] + "-code.zip";
