@@ -4,16 +4,6 @@
     <el-form :model="form" ref="formRef" :rules="rules" label-width="90px">
       <el-row :gutter="10">
          <el-col :span="24">
-           <el-form-item label="工单uuid" prop="uuid">
-             <el-input v-model="form.uuid" maxlength="256" placeholder="请输入工单uuid"/>
-           </el-form-item>
-         </el-col>
-        <el-col :span="24">
-          <el-form-item label="用户id" prop="userId">
-            <el-input type="number" v-model="form.userId" placeholder="请输入用户id"/>
-          </el-form-item>
-        </el-col>
-         <el-col :span="24">
            <el-form-item label="工单标题" prop="title">
              <el-input v-model="form.title" maxlength="128" placeholder="请输入工单标题"/>
            </el-form-item>
@@ -52,11 +42,6 @@
          <el-col :span="24">
            <el-form-item label="联系手机号" prop="contactPhone">
              <el-input v-model="form.contactPhone" maxlength="128" placeholder="请输入联系手机号"/>
-           </el-form-item>
-         </el-col>
-         <el-col :span="24">
-           <el-form-item label="创建人" prop="createdBy">
-             <el-input v-model="form.createdBy" maxlength="32" placeholder="请输入创建人"/>
            </el-form-item>
          </el-col>
       </el-row>

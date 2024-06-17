@@ -81,7 +81,7 @@
               :min-scale="0.2"
               preview-teleported="true"
               :preview-src-list="imgSrcList"
-              :initial-index="scope.row.index"
+              :initial-index="scope.$index"
               fit="cover"
           />
           <span v-else style="color: #8c939d">
