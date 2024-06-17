@@ -43,8 +43,9 @@ export const useUserStore = defineStore({
             },
         ]
     },
-    getters:{
-      userid:(state)=>state.userinfo.userId
+    getters: {
+        userid: (state) => state.userinfo.userId,
+        isAdmin: (state) => state.userinfo.admin,
     },
     actions: {
         /**
@@ -58,7 +59,7 @@ export const useUserStore = defineStore({
                             token: res.token,
                             expires: computeDate(3, 3)
                         });
-                        this.getLoginUserInfo().then((userRes:any) => {
+                        this.getLoginUserInfo().then((userRes: any) => {
                             ElMessage.success(`${formatGreet(new Date())}，${userRes.nickname}`);
                             resolve(res);
                         });
@@ -69,7 +70,7 @@ export const useUserStore = defineStore({
         /**
          * @description:注册
          */
-        async register(data: RegisterParamsType){
+        async register(data: RegisterParamsType) {
             return new Promise((resolve) => {
                 registerApi(data).then((res) => {
                     if (res) {
@@ -92,7 +93,7 @@ export const useUserStore = defineStore({
         },
 
         // 清除登录修改信息
-        async clear(){
+        async clear() {
             removeToken();
             this.$reset();
             useTabsStore().$reset();
