@@ -1,10 +1,39 @@
 <template>
   <el-card shadow="never" class="card-box">
+
     <el-form :model="queryForm" label-width="80px">
       <el-row :gutter="20">
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="用户id">
-            <el-input v-model="queryForm.userId" @keyup.enter="onSearch" clearable placeholder="请输入用户id"/>
+        <el-col :sm="24" :md="12" :lg="8" :xl="6" v-if="isAdmin">
+          <el-form-item label="值班人员">
+            <el-select
+                v-model="queryForm.userId"
+                filterable
+                remote
+                reserve-keyword
+                clearable
+
+                placeholder="请输入值班人员姓名"
+                :remote-method="getUserListByNickname"
+                :loading="userListLoading.status"
+            >
+              <el-option
+                  v-for="item in userList"
+                  :key="item.id"
+                  :label="item.nickname"
+                  :value="item.id"
+              >
+                <div class="flex items-between">
+                  <span>{{ item.nickname }}</span>
+
+                  <span style="color: rgba(167,167,167,0.91);margin-left: 1em;font-size: 0.9em">id={{ item.id }}</span>
+                </div>
+              </el-option>
+              <template #loading>
+                <svg class="circular" viewBox="0 0 50 50">
+                  <circle class="path" cx="25" cy="25" r="20" fill="none"/>
+                </svg>
+              </template>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
@@ -25,11 +54,6 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="搜索">
-            <el-input v-model="queryForm.keyword" @keyup.enter="onSearch" clearable placeholder="请输入名称"/>
-          </el-form-item>
-        </el-col>
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
           <el-form-item label-width="0">
             <el-button type="primary" @click="onSearch">
               <el-icon>
@@ -49,7 +73,7 @@
     </el-form>
   </el-card>
   <el-card shadow="never" class="card-box">
-    <div v-auth="'ticket:add'" class="table-btn-box mb10">
+    <div v-auth="'ticket:add'" class="table-btn-box mb10" v-if="isAdmin">
       <el-button type="primary" @click="openDialog()">
         <el-icon class="mr5">
           <ele-circle-plus/>
@@ -67,7 +91,7 @@
     >
       <el-table-column prop="_tableIndex" label="序号" align="center" width="50px"/>
       <el-table-column prop="uuid" label="工单uuid" align="center" show-overflow-tooltip/>
-      <el-table-column prop="userId" label="用户id" align="center" />
+      <el-table-column prop="userId" label="用户id" align="center" v-if="isAdmin"/>
       <el-table-column prop="title" label="工单标题" align="center" show-overflow-tooltip/>
       <el-table-column prop="body" label="内容" align="center" show-overflow-tooltip/>
       <el-table-column prop="pictures" label="图片" align="center">
@@ -81,8 +105,10 @@
               :min-scale="0.2"
               preview-teleported="true"
               :preview-src-list="imgSrcList"
-              :initial-index="scope.row.index"
+              :initial-index="scope.$index"
               fit="cover"
+              lazy
+              loading="lazy"
           />
           <span v-else style="color: #8c939d">
             暂无图片
@@ -102,10 +128,48 @@
           <el-tag v-else type="info">未知状态</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="ticketType" label="工单类型" align="center" show-overflow-tooltip/>
+      <el-table-column prop="ticketType" label="工单类型" align="center" show-overflow-tooltip>
+        <template #default="scope">
+          <el-tag v-if="scope.row.ticketType == 1" :type="getRandomType()">水管漏水</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 2" :type="getRandomType()">电路故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 3" :type="getRandomType()">煤气泄漏</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 4" :type="getRandomType()">电梯故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 5" :type="getRandomType()">空调维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 6" :type="getRandomType()">门禁系统故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 7" :type="getRandomType()">公共设施损坏</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 8" :type="getRandomType()">停车场设备故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 9" :type="getRandomType()">道路维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 10" :type="getRandomType()">电脑硬件故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 11" :type="getRandomType()">打印机维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 12" :type="getRandomType()">网络故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 13" :type="getRandomType()">生产线设备故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 14" :type="getRandomType()">工厂设备保养</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 15" :type="getRandomType()">仪器仪表维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 16" :type="getRandomType()">变压器故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 17" :type="getRandomType()">发电机维护</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 18" :type="getRandomType()">配电柜维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 19" :type="getRandomType()">应用程序故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 20" :type="getRandomType()">软件更新与安装</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 21" :type="getRandomType()">数据恢复</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 22" :type="getRandomType()">服务器故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 23" :type="getRandomType()">硬盘损坏</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 24" :type="getRandomType()">设备连接问题</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 25" :type="getRandomType()">网络中断</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 26" :type="getRandomType()">路由器配置</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 27" :type="getRandomType()">防火墙问题</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 28" :type="getRandomType()">安防系统故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 29" :type="getRandomType()">监控设备维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 30" :type="getRandomType()">垃圾清理</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 31" :type="getRandomType()">下水道堵塞</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 32" :type="getRandomType()">消毒杀菌</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 33" :type="getRandomType()">车辆故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 34" :type="getRandomType()">交通信号设备维修</el-tag>
+          <el-tag v-else type="info">未知类型</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="contactEmail" label="联系邮箱" align="center" show-overflow-tooltip/>
       <el-table-column prop="contactPhone" label="联系手机号" align="center" show-overflow-tooltip/>
-      <el-table-column label="操作" fixed="right" align="center" min-width="116">
+      <el-table-column label="操作" fixed="right" align="center" min-width="116" v-if="isAdmin">
         <template #default="scope">
           <el-button v-auth="'ticket:update'" link type="primary" @click="openDialog(scope.row.id)">
             <el-icon>
@@ -135,6 +199,9 @@ import {deleteTicket, getTicketPage} from "@/api/test/ticket";
 import {ElMessage, ElMessageBox} from 'element-plus'
 import TableForm from './form.vue'
 import {calcTableIndex} from "@/utils/util";
+import {useUserStore} from "@/store/modules/user";
+import {useDebounceFn} from "@vueuse/core";
+import {getSysUserListByNickname} from "@/api/user";
 /** 查询参数 **/
 let queryForm: any = ref({
   keyword: null,
@@ -142,6 +209,30 @@ let queryForm: any = ref({
   title: null,
   status: null,
 });
+
+
+// 值班人员模糊查询临时列表
+const userList = ref([]);
+const userListLoading = ref({
+  status: false
+})
+
+
+
+const getUserListByNickname = useDebounceFn((nickname: string) => {
+  userListLoading.status = true;
+  pagination.pageIndex = 1;
+  if (nickname) {
+    getSysUserListByNickname({...pagination, nickname, ...orderBy.value})
+        .then(res => {
+          userList.value = res.list;
+        })
+  } else {
+    userList.value = [];
+  }
+  userListLoading.status = false;
+
+}, 300)
 
 const tableLoading = ref({
   status: false
@@ -160,6 +251,13 @@ const cellStyle= ({ row, column, rowIndex, columnIndex })=> {
   return {}
 
 }
+
+const getRandomType = ()=> {
+  const types = ["primary", "success", "info", "warning", "danger"];
+  const randomIndex = Math.floor(Math.random() * types.length);
+  return types[randomIndex];
+}
+
 // 查询
 const onSearch = () => {
   pagination.pageIndex = 1;
@@ -204,9 +302,18 @@ const sortChange = ({column, prop, order}) => {
 const tableData = reactive({
   data: [],
 })
+
+// 当前用户id以及是否是管理员
+const {userid,isAdmin} = useUserStore();
+
+
 // 获取表格列表
 const getTableList = () => {
   tableLoading.value.status = true;
+  if(!isAdmin){
+    queryForm.value.userId = userid;
+  }
+  console.log(userid,isAdmin);
   getTicketPage({...pagination, ...queryForm.value, ...orderBy.value}).then(res => {
     tableData.data = calcTableIndex(res, pagination);
     imgSrcList.value = tableData.data.map(item => item.pictures);
