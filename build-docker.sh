@@ -1,10 +1,10 @@
 # 1. build打包
 npm run build
 
-# 2. 在Dockerfile文件目录下，构建docker镜像，spring-boot-plus-vue3为镜像名称
-docker build -t spring-boot-plus-vue3 .
+# 2. 在Dockerfile文件目录下，构建docker镜像，kuku-fronted为镜像名称
+docker build -t kuku-fronted .
 
 # 3. 将镜像导出为tar
-docker save spring-boot-plus-vue3 -o spring-boot-plus-vue3.tar
+docker save kuku-fronted3 -o kuku-fronted.tar
 
 

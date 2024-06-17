@@ -5,7 +5,7 @@
     </div>
     <div v-else class="logo-content">
       <img class="logo-img" src="@/assets/logo.png" alt="">
-      <span class="logo-txt ml5">spring-boot-plus</span>
+      <span class="logo-txt ml5">kuku工单报修系统</span>
     </div>
   </div>
 </template>
