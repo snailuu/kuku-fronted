@@ -62,7 +62,32 @@
         </el-col>
         <el-col :span="24">
           <el-form-item label="工单类型" prop="ticketType">
-            <el-input v-model="form.ticketType" maxlength="4" placeholder="请输入工单类型"/>
+            <el-select
+                v-model="form.ticketType"
+                filterable
+                remote
+                reserve-keyword
+                clearable
+                placeholder="请输入工单类型"
+                :remote-method="getTicketNameList"
+                :loading="tickListLoading.status"
+            >
+              <el-option
+                  v-for="item in tickList"
+                  :key="item.id"
+                  :label="item.nickname"
+                  :value="item.id"
+              >
+                <div class="flex items-between">
+                  <span>{{ item.name }}</span>
+                </div>
+              </el-option>
+              <template #loading>
+                <svg class="circular" viewBox="0 0 50 50">
+                  <circle class="path" cx="25" cy="25" r="20" fill="none"/>
+                </svg>
+              </template>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -94,6 +119,7 @@ import {store} from '@/store'
 import {useUserStore} from "@/store/modules/user";
 import {useDebounceFn} from "@vueuse/core";
 import {getSysUserListByNickname} from "@/api/user";
+import {getTypeTicket, getTypeTicketPage} from "@/api/test/typeTicket";
 
 const formRef = ref<FormInstance>()
 
@@ -157,6 +183,11 @@ const userListLoading = ref({
   status: false
 })
 
+const tickList = ref([]);
+const tickListLoading = ref({
+  status: false
+})
+
 /** 分页*/
 // 分页数据
 const pagination = reactive({
@@ -180,6 +211,24 @@ const getUserListByNickname = useDebounceFn((nickname: string) => {
     userList.value = [];
   }
   userListLoading.status = false;
+
+}, 300)
+
+const getTicketNameList = useDebounceFn((nickname: string) => {
+  tickListLoading.status = true;
+  pagination.pageIndex = 1;
+  pagination.pageSize = 100;
+
+  if (nickname) {
+    getTypeTicketPage({...pagination, nickname, ...orderBy.value})
+        .then(res => {
+          tickList.value = res.list;
+        })
+  } else {
+    tickList.value = [];
+  }
+  tickListLoading.status = false;
+  pagination.pageSize = 10;
 
 }, 300)
 

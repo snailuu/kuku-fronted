@@ -128,7 +128,45 @@
           <el-tag v-else type="info">未知状态</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="ticketType" label="工单类型" align="center" show-overflow-tooltip/>
+      <el-table-column prop="ticketType" label="工单类型" align="center" show-overflow-tooltip>
+        <template #default="scope">
+          <el-tag v-if="scope.row.ticketType == 1" :type="getRandomType()">水管漏水</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 2" :type="getRandomType()">电路故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 3" :type="getRandomType()">煤气泄漏</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 4" :type="getRandomType()">电梯故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 5" :type="getRandomType()">空调维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 6" :type="getRandomType()">门禁系统故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 7" :type="getRandomType()">公共设施损坏</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 8" :type="getRandomType()">停车场设备故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 9" :type="getRandomType()">道路维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 10" :type="getRandomType()">电脑硬件故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 11" :type="getRandomType()">打印机维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 12" :type="getRandomType()">网络故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 13" :type="getRandomType()">生产线设备故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 14" :type="getRandomType()">工厂设备保养</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 15" :type="getRandomType()">仪器仪表维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 16" :type="getRandomType()">变压器故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 17" :type="getRandomType()">发电机维护</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 18" :type="getRandomType()">配电柜维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 19" :type="getRandomType()">应用程序故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 20" :type="getRandomType()">软件更新与安装</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 21" :type="getRandomType()">数据恢复</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 22" :type="getRandomType()">服务器故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 23" :type="getRandomType()">硬盘损坏</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 24" :type="getRandomType()">设备连接问题</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 25" :type="getRandomType()">网络中断</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 26" :type="getRandomType()">路由器配置</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 27" :type="getRandomType()">防火墙问题</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 28" :type="getRandomType()">安防系统故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 29" :type="getRandomType()">监控设备维修</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 30" :type="getRandomType()">垃圾清理</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 31" :type="getRandomType()">下水道堵塞</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 32" :type="getRandomType()">消毒杀菌</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 33" :type="getRandomType()">车辆故障</el-tag>
+          <el-tag v-else-if="scope.row.ticketType == 34" :type="getRandomType()">交通信号设备维修</el-tag>
+          <el-tag v-else type="info">未知类型</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="contactEmail" label="联系邮箱" align="center" show-overflow-tooltip/>
       <el-table-column prop="contactPhone" label="联系手机号" align="center" show-overflow-tooltip/>
       <el-table-column label="操作" fixed="right" align="center" min-width="116" v-if="isAdmin">
@@ -213,6 +251,13 @@ const cellStyle= ({ row, column, rowIndex, columnIndex })=> {
   return {}
 
 }
+
+const getRandomType = ()=> {
+  const types = ["primary", "success", "info", "warning", "danger"];
+  const randomIndex = Math.floor(Math.random() * types.length);
+  return types[randomIndex];
+}
+
 // 查询
 const onSearch = () => {
   pagination.pageIndex = 1;
