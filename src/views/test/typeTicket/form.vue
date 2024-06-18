@@ -3,7 +3,7 @@
              @close="closeDialog" draggable>
     <el-form :model="form" ref="formRef" :rules="rules" label-width="90px">
       <el-row :gutter="10">
-         <el-col :span="12">
+         <el-col :span="24">
            <el-form-item label="类型名称" prop="name">
              <el-input v-model="form.name" maxlength="20" placeholder="请输入类型名称"/>
            </el-form-item>
