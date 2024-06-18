@@ -1,26 +1,12 @@
 <template>
-  <el-dialog :model-value="dialogData.isShow" :title="dialogData.id?'编辑':'新增'"
-             @close="closeDialog" draggable>
+  <el-dialog :model-value="dialogData.isShow" :title="dialogData.id ? '编辑' : '新增'" @close="closeDialog" draggable>
     <el-form :model="form" ref="formRef" :rules="rules" label-width="90px">
       <el-row :gutter="10">
         <el-col :span="24">
           <el-form-item label="负责人" prop="userId">
-            <el-select
-                v-model="form.userId"
-                filterable
-                remote
-                reserve-keyword
-                clearable
-                placeholder="请输入值班人员姓名"
-                :remote-method="getUserListByNickname"
-                :loading="userListLoading.status"
-            >
-              <el-option
-                  v-for="item in userList"
-                  :key="item.id"
-                  :label="item.nickname"
-                  :value="item.id"
-              >
+            <el-select v-model="form.userId" filterable remote reserve-keyword clearable placeholder="请输入值班人员姓名"
+              :remote-method="getUserListByNickname" :loading="userListLoading.status">
+              <el-option v-for="item in userList" :key="item.id" :label="item.nickname" :value="item.id">
                 <div class="flex items-between">
                   <span>{{ item.nickname }}</span>
                   <span style="color: rgba(167,167,167,0.91);margin-left: 1em;font-size: 0.9em">id={{ item.id }}</span>
@@ -28,7 +14,7 @@
               </el-option>
               <template #loading>
                 <svg class="circular" viewBox="0 0 50 50">
-                  <circle class="path" cx="25" cy="25" r="20" fill="none"/>
+                  <circle class="path" cx="25" cy="25" r="20" fill="none" />
                 </svg>
               </template>
             </el-select>
@@ -36,68 +22,48 @@
         </el-col>
         <el-col :span="24">
           <el-form-item label="工单标题" prop="title">
-            <el-input v-model="form.title" maxlength="128" placeholder="请输入工单标题"/>
+            <el-input v-model="form.title" maxlength="128" placeholder="请输入工单标题" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <el-form-item label="内容" prop="body">
-            <el-input type="textarea" v-model="form.body" maxlength="" placeholder="请输入内容"/>
+            <el-input type="textarea" v-model="form.body" maxlength="" placeholder="请输入内容" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <el-form-item label="图片" prop="pictures">
-            <Upload v-model:value="form.pictures" type="head"
-                    :customStyle="{}"/>
+            <Upload v-model:value="form.pictures" type="head" :customStyle="{}" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <el-form-item label="状态" prop="status">
             <el-select v-model="form.status" clearable placeholder="请选择状态">
-              <el-option value="0" label="待确定"/>
-              <el-option value="1" label="进行中"/>
-              <el-option value="2" label="已完成"/>
-              <el-option value="3" label="关闭"/>
+              <el-option value="0" label="待确定" />
+              <el-option value="1" label="进行中" />
+              <el-option value="2" label="已完成" />
+              <el-option value="3" label="关闭" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="工单类型" prop="ticketType">
-            <el-select
-                v-model="form.ticketType"
-                filterable
-                remote
-                reserve-keyword
-                clearable
-                placeholder="请输入工单类型"
-                :remote-method="getTicketNameList"
-                :loading="tickListLoading.status"
-            >
-              <el-option
-                  v-for="item in tickList"
-                  :key="item.id"
-                  :label="item.nickname"
-                  :value="item.id"
-              >
+          <el-form-item label="工单类型">
+            <el-select v-model="form.ticketType" placeholder="请输入工单类型">
+              <el-option v-for="item in tickList" :key="item.id" :label="item.nickname" :value="item.id">
                 <div class="flex items-between">
                   <span>{{ item.name }}</span>
                 </div>
               </el-option>
-              <template #loading>
-                <svg class="circular" viewBox="0 0 50 50">
-                  <circle class="path" cx="25" cy="25" r="20" fill="none"/>
-                </svg>
-              </template>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <el-form-item label="联系邮箱" prop="contactEmail">
-            <el-input v-model="form.contactEmail" maxlength="128" placeholder="请输入联系邮箱"/>
+            <el-input v-model="form.contactEmail" maxlength="128" placeholder="请输入联系邮箱" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <el-form-item label="联系手机号" prop="contactPhone">
-            <el-input v-model="form.contactPhone" maxlength="128" placeholder="请输入联系手机号"/>
+            <el-input v-model="form.contactPhone" maxlength="128" placeholder="请输入联系手机号" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -112,14 +78,14 @@
 </template>
 
 <script setup lang="ts">
-import {ElMessage, FormInstance, FormRules} from "element-plus";
-import {addTicket, getTicket, updateTicket} from "@/api/test/ticket";
+import { ElMessage, FormInstance, FormRules } from "element-plus";
+import { addTicket, getTicket, updateTicket } from "@/api/test/ticket";
 import Upload from "@/components/Upload/index.vue";
-import {store} from '@/store'
-import {useUserStore} from "@/store/modules/user";
-import {useDebounceFn} from "@vueuse/core";
-import {getSysUserListByNickname} from "@/api/user";
-import {getTypeTicket, getTypeTicketPage} from "@/api/test/typeTicket";
+import { store } from '@/store'
+import { useUserStore } from "@/store/modules/user";
+import { useDebounceFn } from "@vueuse/core";
+import { getSysUserListByNickname } from "@/api/user";
+import { getTypeTicket, getTypeTicketPage } from "@/api/test/typeTicket";
 
 const formRef = ref<FormInstance>()
 
@@ -148,19 +114,19 @@ let form: any = ref({
 // 效验规则
 const rules = reactive<FormRules>({
   title: [
-    {required: true, message: '请输入工单标题', trigger: 'blur'},
+    { required: true, message: '请输入工单标题', trigger: 'blur' },
   ],
   body: [
-    {required: true, message: '请输入内容', trigger: 'blur'},
+    { required: true, message: '请输入内容', trigger: 'blur' },
   ],
   status: [
-    {required: true, message: '请选择状态', trigger: 'blur'},
+    { required: true, message: '请选择状态', trigger: 'blur' },
   ],
   ticketType: [
-    {required: true, message: '请输入工单类型', trigger: 'blur'},
+    { required: true, message: '请输入工单类型', trigger: 'blur' },
   ],
   contactEmail: [
-    {required: true, message: '请输入联系邮箱', trigger: 'blur'},
+    { required: true, message: '请输入联系邮箱', trigger: 'blur' },
   ],
 })
 
@@ -204,10 +170,10 @@ const getUserListByNickname = useDebounceFn((nickname: string) => {
   userListLoading.status = true;
   pagination.pageIndex = 1;
   if (nickname) {
-    getSysUserListByNickname({...pagination, nickname, ...orderBy.value})
-        .then(res => {
-          userList.value = res.list;
-        })
+    getSysUserListByNickname({ ...pagination, nickname, ...orderBy.value })
+      .then(res => {
+        userList.value = res.list;
+      })
   } else {
     userList.value = [];
   }
@@ -221,10 +187,10 @@ const getTicketNameList = useDebounceFn((nickname: string) => {
   pagination.pageSize = 100;
 
   if (nickname) {
-    getTypeTicketPage({...pagination, nickname, ...orderBy.value})
-        .then(res => {
-          tickList.value = res.list;
-        })
+    getTypeTicketPage({ ...pagination, nickname, ...orderBy.value })
+      .then(res => {
+        tickList.value = res.list;
+      })
   } else {
     tickList.value = [];
   }
@@ -259,14 +225,14 @@ const submit = async () => {
     if (valid) {
       let data = form.value;
       if (data.id) {
-        updateTicket({...data}).then(() => {
+        updateTicket({ ...data }).then(() => {
           ElMessage.success('操作成功');
           closeDialog();
           emits('refresh');
         })
       } else {
         form.createdBy = user.userid;
-        addTicket({...data}).then(() => {
+        addTicket({ ...data }).then(() => {
           ElMessage.success('操作成功');
           closeDialog();
           emits('refresh');
@@ -275,12 +241,24 @@ const submit = async () => {
     }
   })
 }
+const getTicktType = async () => {
+  try {
+    pagination.pageIndex = 1;
+    pagination.pageSize = 100;
+    const res = await getTypeTicketPage({ ...pagination })
+    console.log(res);
+    tickList.value = res.list
+  } catch (e) {
+    console.log(e);
 
+  }
+}
+onMounted(() => {
+  getTicktType()
+})
 defineExpose({
   openDialog,
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
