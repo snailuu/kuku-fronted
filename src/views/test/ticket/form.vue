@@ -4,8 +4,10 @@
       <el-row :gutter="10">
         <el-col :span="24">
           <el-form-item label="负责人" prop="userId">
-            <el-select v-model="form.userId" filterable remote reserve-keyword clearable placeholder="请输入值班人员姓名"
-              :remote-method="getUserListByNickname" :loading="userListLoading.status">
+            <el-select v-model="form.userId" filterable remote reserve-keyword clearable
+                       placeholder="输入值班人员姓名进行搜索"
+              :remote-method="getUserListByNickname" :loading="userListLoading.status"
+            >
               <el-option v-for="item in userList" :key="item.id" :label="item.nickname" :value="item.id">
                 <div class="flex items-between">
                   <span>{{ item.nickname }}</span>

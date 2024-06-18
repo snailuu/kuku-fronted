@@ -1,74 +1,7 @@
 <template>
   <el-card shadow="never" class="card-box">
-
-    <el-form :model="queryForm" label-width="80px">
-      <el-row :gutter="20">
-        <el-col :sm="24" :md="12" :lg="8" :xl="6" v-if="isAdmin">
-          <el-form-item label="值班人员">
-            <el-select v-model="queryForm.userId" filterable remote reserve-keyword clearable placeholder="请输入值班人员姓名"
-              :remote-method="getUserListByNickname" :loading="userListLoading.status">
-              <el-option v-for="item in userList" :key="item.id" :label="item.nickname" :value="item.id">
-                <div class="flex items-between">
-                  <span>{{ item.nickname }}</span>
-
-                  <span style="color: rgba(167,167,167,0.91);margin-left: 1em;font-size: 0.9em">id={{ item.id }}</span>
-                </div>
-              </el-option>
-              <template #loading>
-                <svg class="circular" viewBox="0 0 50 50">
-                  <circle class="path" cx="25" cy="25" r="20" fill="none" />
-                </svg>
-              </template>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="工单标题">
-            <el-input v-model="queryForm.title" @keyup.enter="onSearch" clearable placeholder="请输入工单标题" />
-          </el-form-item>
-        </el-col>
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label="状态">
-            <el-select v-model="queryForm.status" clearable placeholder="请选择状态">
-              <el-option value="0" label="待确定" />
-              <el-option value="1" label="进行中" />
-              <el-option value="2" label="已完成" />
-              <el-option value="-1" label="关闭" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :sm="24" :md="12" :lg="8" :xl="6">
-          <el-form-item label-width="0">
-            <el-button type="primary" @click="onSearch">
-              <el-icon>
-                <ele-search />
-              </el-icon>
-              <span class="search-btn__left">查询</span>
-            </el-button>
-            <el-button @click="onReset">
-              <el-icon>
-                <ele-refresh />
-              </el-icon>
-              <span class="search-btn__left">重置</span>
-            </el-button>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-  </el-card>
-  <el-card shadow="never" class="card-box">
-    <div v-auth="'ticket:add'" class="table-btn-box mb10" v-if="isAdmin">
-      <el-button type="primary" @click="openDialog()">
-        <el-icon class="mr5">
-          <ele-circle-plus />
-        </el-icon>
-        新 增
-      </el-button>
-    </div>
     <el-table v-loading="tableLoading.status" :data="tableData.data" border row-key="id" @sort-change="sortChange"
-      empty-text="暂无数据" :cell-style="cellStyle">
+              empty-text="暂无数据" :cell-style="cellStyle">
       <el-table-column prop="_tableIndex" label="序号" align="center" width="50px" />
       <el-table-column prop="uuid" label="工单uuid" align="center" show-overflow-tooltip />
       <el-table-column prop="userId" label="用户id" align="center" v-if="isAdmin" />
@@ -77,8 +10,8 @@
       <el-table-column prop="pictures" label="图片" align="center">
         <template #default="scope">
           <el-image v-if="scope.row.pictures?.startsWith('http')" style="width: 100px; height: 100px"
-            :src="scope.row.pictures" :zoom-rate="1.2" :max-scale="7" :min-scale="0.2" preview-teleported="true"
-            :preview-src-list="imgSrcList" :initial-index="scope.$index" fit="cover" lazy loading="lazy" />
+                    :src="scope.row.pictures" :zoom-rate="1.2" :max-scale="7" :min-scale="0.2" preview-teleported="true"
+                    :preview-src-list="imgSrcList" :initial-index="scope.$index" fit="cover" lazy loading="lazy" />
           <span v-else style="color: #8c939d">
             暂无图片
           </span>
@@ -93,7 +26,7 @@
           <el-tag v-if="scope.row.status == 0" type="warning">待确定</el-tag>
           <el-tag v-else-if="scope.row.status == 1">进行中</el-tag>
           <el-tag v-else-if="scope.row.status == 2" type="success">已完成</el-tag>
-          <el-tag v-else-if="scope.row.status == -1" type="info">关闭</el-tag>
+          <el-tag v-else-if="scope.row.status == 3" type="info">关闭</el-tag>
           <el-tag v-else type="info">未知状态</el-tag>
         </template>
       </el-table-column>
@@ -140,31 +73,29 @@
       <el-table-column prop="contactPhone" label="联系手机号" align="center" show-overflow-tooltip />
       <el-table-column label="操作" fixed="right" align="center" min-width="116" v-if="isAdmin">
         <template #default="scope">
-          <el-button v-auth="'ticket:update'" link type="primary" @click="openDialog(scope.row.id)">
-            <el-icon>
-              <ele-edit />
-            </el-icon>
-            修改
+          <el-button v-auth="'ticket:update'" link type="primary" @click="updateTicketStatus(scope.row, 1)">
+            <el-icon><CircleCheck /></el-icon>
+            通过
           </el-button>
-          <el-button v-auth="'ticket:delete'" link type="primary" @click="delTable(scope.row.id)">
+          <el-button v-auth="'ticket:delete'" link type="danger" @click="updateTicketStatus(scope.row, -1)">
             <el-icon>
               <ele-delete />
             </el-icon>
-            删除
+            关闭
           </el-button>
 
         </template>
       </el-table-column>
     </el-table>
     <CustomPagination v-model:currentPage="pagination.pageIndex" v-model:pageSize="pagination.pageSize"
-      :total="pagination.total" @changePage="changePage" @changeSize="changeSize"/>
+                      :total="pagination.total" @changePage="changePage" @changeSize="changeSize"/>
 
     <TableForm ref="tableDialogRef" @refresh="getTableList" />
 
   </el-card>
 </template>
 <script lang="ts" setup>
-import { deleteTicket, getTicketPage } from "@/api/test/ticket";
+import {deleteTicket, getTicketPage, updateTicket} from "@/api/test/ticket";
 import { ElMessage, ElMessageBox } from 'element-plus'
 import TableForm from './form.vue'
 import { calcTableIndex } from "@/utils/util";
@@ -193,9 +124,9 @@ const getUserListByNickname = useDebounceFn((nickname: string) => {
   pagination.pageIndex = 1;
   if (nickname) {
     getSysUserListByNickname({ ...pagination, nickname, ...orderBy.value })
-      .then(res => {
-        userList.value = res.list;
-      })
+        .then(res => {
+          userList.value = res.list;
+        })
   } else {
     userList.value = [];
   }
@@ -220,6 +151,9 @@ const cellStyle = ({ row, column, rowIndex, columnIndex }) => {
   return {}
 
 }
+
+// 审核列表
+
 
 const getRandomType = () => {
   // const types = ["primary", "success", "info", "warning", "danger"];
@@ -286,6 +220,7 @@ const { userid, isAdmin } = useUserStore();
 // 获取表格列表
 const getTableList = () => {
   tableLoading.value.status = true;
+  queryForm.value.status = 0;
   if (!isAdmin) {
     queryForm.value.userId = userid;
   }
@@ -298,23 +233,33 @@ const getTableList = () => {
     tableLoading.value.status = false;
   })
 }
+
+const updateTicketStatus = (data: any, status: number) => {
+  data.status = status;
+  updateTicket({...data}).then(()=>{
+    ElMessage.success("审核成功");
+    getTableList();
+  })
+}
+
+
 // 删除
 const delTable = (id: string) => {
   ElMessageBox.confirm(
-    '是否确认删除本条数据？',
-    '提示',
-    {
-      confirmButtonText: '确认',
-      cancelButtonText: '取消',
-      type: 'warning',
-    })
-    .then(() => {
-      deleteTicket(id).then(() => {
-        ElMessage.success('删除成功');
-        getTableList();
+      '是否确认删除本条数据？',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
       })
-    }).catch(() => {
-    })
+      .then(() => {
+        deleteTicket(id).then(() => {
+          ElMessage.success('删除成功');
+          getTableList();
+        })
+      }).catch(() => {
+  })
 }
 
 /** 添加，编辑*/

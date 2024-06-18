@@ -46,14 +46,14 @@ export default {
                 icon: 'ele-user'
             }
         },
-        {
-            path: "/calendar",
-            name: "Calendar",
-            component: () => import("@/views/system/calendar.vue"),
-            meta: {
-                title: "排班日历",
-                icon: 'ele-user'
-            }
-        }
+        // {
+        //     path: "/calendar",
+        //     name: "Calendar",
+        //     component: () => import("@/views/system/calendar.vue"),
+        //     meta: {
+        //         title: "排班日历",
+        //         icon: 'ele-user'
+        //     }
+        // }
     ]
 } as RouteConfigsTable;
