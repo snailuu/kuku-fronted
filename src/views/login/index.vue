@@ -7,11 +7,11 @@
 
           <p id="kuku-title"></p>
         </div>
-<!--        <h1 class="animate__animated animate__bounce">An animated element</h1>-->
+        <!--        <h1 class="animate__animated animate__bounce">An animated element</h1>-->
         <transition name="fade" mode="out-in">
           <template v-if="isLogin">
             <el-form animate__animated animate__flash ref="ruleFormRef" :model="loginForm" :rules="loginRules">
-              <el-form-item  v-if="isLogin" class="mb25" prop="username">
+              <el-form-item v-if="isLogin" class="mb25" prop="username">
                 <el-input style="width: 300px" :prefix-icon="User" clearable v-model="loginForm.username"
                           placeholder="请输入用户名"/>
               </el-form-item>
@@ -43,7 +43,7 @@
                           placeholder="请确认密码"/>
               </el-form-item>
               <el-form-item class="mb25" prop="email">
-                <el-input :prefix-icon="Lock"  clearable v-model="registerForm.email"
+                <el-input :prefix-icon="Lock" clearable v-model="registerForm.email"
                           placeholder="请输入邮箱(仅支持163和qq邮箱)"/>
 
               </el-form-item>
@@ -77,7 +77,7 @@ const router = useRouter();
 
 const isLogin = ref(true); // 是否是登录表单
 const regex = {
-  email : /^([A-Za-z0-9_\-\.])+\@(163.com|qq.com|42du.cn)$/,
+  email: /^([A-Za-z0-9_\-\.])+\@(163.com|qq.com|42du.cn)$/,
 }
 
 const loginForm = reactive({
@@ -89,7 +89,7 @@ const registerForm = reactive({
   username: '',
   password: '',
   confirmPassword: '',
-  email:''
+  email: ''
 })
 
 const ruleForm = reactive({
@@ -121,12 +121,12 @@ const registerRules = reactive({
     required: true,
     message: '请输入密码',
     trigger: 'blur',
-  }],
+  }, {min: 6, max: 12, message: '密码长度应为6到12位', trigger: 'blur'}],
   confirmPassword: [{
     required: true,
     message: '请确认密码',
     trigger: 'blur',
-  }],
+  }, {min: 6, max: 12, message: '密码长度应为6到12位', trigger: 'blur'}],
   email: [{
     required: true,
     message: '请输入邮箱',
@@ -155,15 +155,19 @@ const login = () => {
 };
 
 const register = () => {
-  if(registerForm.password == null || registerForm.password == ""){
+  if (registerForm.password == null || registerForm.password == "") {
     ElMessage.error('密码不能为空');
+    return;
+  }
+  if (registerForm.password.length<6 || registerForm.password.length>12){
+    ElMessage.error('密码长度应为6到12位');
     return;
   }
   if (registerForm.password !== registerForm.confirmPassword) {
     ElMessage.error('密码和确认密码不一致');
     return;
   }
-  if(!regex.email.test(registerForm.email)){
+  if (!regex.email.test(registerForm.email)) {
     ElMessage.error('邮箱格式不正确,仅支持163和qq邮箱');
     return;
   }
@@ -172,7 +176,7 @@ const register = () => {
     username: registerForm.username,
     password: md5(registerForm.password),
     email: registerForm.email
-  }).then(async ()=>{
+  }).then(async () => {
     toggleForm();
   })
 
