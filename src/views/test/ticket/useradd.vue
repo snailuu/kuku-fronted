@@ -18,8 +18,14 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="工单类型" prop="ticketType">
-                        <el-input v-model="form.ticketType" maxlength="4" placeholder="请输入工单类型" />
+                    <el-form-item label="工单类型">
+                        <el-select v-model="form.ticketType" placeholder="请输入工单类型">
+                            <el-option v-for="item in tickList" :key="item.id" :label="item.nickname" :value="item.id">
+                                <div class="flex items-between">
+                                    <span>{{ item.name }}</span>
+                                </div>
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
@@ -44,10 +50,12 @@
 
 <script setup lang="ts">
 import { ElMessage, FormInstance, FormRules } from "element-plus";
-import { addTicket, getTicket, updateTicket } from "@/api/test/ticket";
+import { addTicket, getTicket, getTicketPage, updateTicket } from "@/api/test/ticket";
 import Upload from "@/components/Upload/index.vue";
 import { store } from '@/store'
 import { useUserStore } from "@/store/modules/user";
+import { useDebounceFn } from "@vueuse/core";
+import { getTypeTicket, getTypeTicketPage } from "@/api/test/typeTicket";
 const formRef = ref<FormInstance>()
 
 const emits = defineEmits<{
@@ -154,6 +162,27 @@ const submit = async () => {
 const regex = {
     email: /^([A-Za-z0-9_\-\.])+\@(163.com|qq.com|42du.cn)$/,
 }
+const pagination = reactive({
+    pageIndex: 1,
+    pageSize: 10,
+    total: 0
+})
+const tickList = ref([]);
+const getTicktType = async () => {
+    try {
+        pagination.pageIndex = 1;
+        pagination.pageSize = 100;
+        const res = await getTypeTicketPage({ ...pagination })
+        console.log(res);
+        tickList.value = res.list
+    } catch (e) {
+        console.log(e);
+
+    }
+}
+onMounted(() => {
+    getTicktType()
+})
 defineExpose({
     openDialog,
 });
