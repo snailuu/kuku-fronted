@@ -104,7 +104,7 @@
     </el-table>
     <!--    分页-->
     <CustomPagination v-model:currentPage="pageData.pageIndex" v-model:pageSize="pageData.pageSize"
-                      :total="pageData.total" @changePage="changePage"/>
+                      :total="pageData.total" @changePage="changePage" @changeSize="changeSize"/>
 
     <!--    添加，编辑弹框-->
     <TableForm ref="tableDialogRef" @refresh="getTableList" :roleList="roleList"/>
@@ -152,7 +152,11 @@ const changePage = (page: number) => {
   pageData.pageIndex = page;
   getTableList();
 }
-
+// 切换页数
+const changeSize = (size: number) => {
+  pageData.pageSize = size;
+  getTableList();
+}
 /** 排序*/
 const orderBy = ref({})
 

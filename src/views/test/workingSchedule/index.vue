@@ -136,7 +136,7 @@
       </el-table-column>
     </el-table>
     <CustomPagination v-model:currentPage="pagination.pageIndex" v-model:pageSize="pagination.pageSize"
-                      :total="pagination.total" @changePage="changePage"/>
+                      :total="pagination.total" @changePage="changePage" @changeSize="changeSize"/>
     <TableForm ref="tableDialogRef" @refresh="getTableList"/>
 
   </el-card>
@@ -209,6 +209,13 @@ const pagination = reactive({
 // 翻页
 const changePage = (page: number) => {
   pagination.pageIndex = page;
+  getTableList();
+}
+
+// 切换页数
+const changeSize = (size: number) => {
+  pagination.pageSize = size;
+  ElMessage.info(`当前页数为${size}:${pagination}`)
   getTableList();
 }
 
